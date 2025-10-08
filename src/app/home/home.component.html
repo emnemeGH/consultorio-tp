@@ -1,0 +1,25 @@
+<mat-toolbar class="header">
+    <span>Bienvenido a la clínica virtual</span>
+</mat-toolbar>
+
+<div class="main-content">
+    <mat-card class="info-card">
+        <mat-card-content>
+            <h2>Inicia sesión para acceder a las funcionalidades principales</h2>
+            <p>
+                Como paciente registrado puedes:
+            </p>
+            <ul>
+                <li>Solicitar turnos</li>
+                <li>Ver tus turnos agendados</li>
+                <li>Modificar tus datos personales</li>
+            </ul>
+
+            <div class="buttons">
+                <button mat-raised-button class="btn-login">Iniciar sesión</button>
+                <button mat-stroked-button class="btn-registro" routerLink="/registro">Registrarse</button>
+            </div>
+            <!-- (click)="abrirLogin()" -->
+        </mat-card-content>
+    </mat-card>
+</div>
