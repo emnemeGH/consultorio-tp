@@ -121,7 +121,6 @@ CREATE TABLE `usuario` (
   `nombre` varchar(30) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
   `password` varchar(64) NOT NULL,
-  `usuario` varchar(25) NOT NULL,
   `rol` varchar(20) NOT NULL,
   `email` varchar(30) NOT NULL,
   `telefono` varchar(10) NOT NULL,
@@ -251,3 +250,9 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+ALTER TABLE usuario
+DROP COLUMN usuario;
+
+ALTER TABLE usuario
+ADD COLUMN id_cobertura TINYINT(4) NULL;

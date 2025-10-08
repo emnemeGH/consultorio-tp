@@ -1,0 +1,16 @@
+.campos {
+    width: 100%;
+}
+
+.botones {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.campo-usuario {
+    padding-bottom: 24px;
+}
+
+h1 {
+    margin-bottom: 0px;
+}
