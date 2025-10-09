@@ -1,0 +1,22 @@
+.header {
+    background-color: #1565C0;
+    font-size: 1.3rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.btn-cerrar {
+    margin: 0px 20px;
+    margin-left: 40px;
+}
+
+.usuario-nombre {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}

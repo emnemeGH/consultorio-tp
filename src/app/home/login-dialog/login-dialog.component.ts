@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { LoginRequest } from 'src/app/models/login-request.model';
 import { LoginResponse } from 'src/app/models/login-response.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,6 +22,7 @@ export class LoginDialogComponent {
   private dialogRef = inject(MatDialogRef<LoginDialogComponent>)
   private _authService = inject(AuthService)
   private _snackBar = inject(MatSnackBar);
+  private _router = inject(Router);
 
 
   aceptar() {
@@ -51,9 +53,27 @@ export class LoginDialogComponent {
             this._authService.guardarSesion(response.jwt, usuario);
 
             this._snackBar.open('Inicio de sesión exitoso', 'Cerrar', {
-              duration: 3000,
-              panelClass: ['snackbar-success']
+              duration: 3000
             });
+
+            switch (usuario.rol) {
+              case 'medico':
+                this._router.navigate(['/inicio-medico']);
+                break;
+              case 'paciente':
+                this._router.navigate(['/inicio-paciente']);
+                break;
+              case 'administrador':
+                this._router.navigate(['/inicio-admin']);
+                break;
+              case 'operador':
+                this._router.navigate(['/inicio-operador']);
+                break;
+              default:
+                this._router.navigate(['']);
+                break;
+            }
+            
           } else {
             console.error('La respuesta del backend no contiene la información del usuario');
             alert('Ocurrió un error al procesar la información del usuario');
@@ -62,8 +82,7 @@ export class LoginDialogComponent {
           this.dialogRef.close(true);
         } else {
           this._snackBar.open('Usuario o contraseña incorrectos', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['snackbar-error']
+            duration: 3000
           });
         }
       },

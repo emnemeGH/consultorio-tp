@@ -1,2 +1,19 @@
-<app-home></app-home>
+<mat-toolbar class="header">
+    <span>Bienvenido a la clínica virtual</span>
+
+    <span class="spacer"></span>
+
+    <ng-container *ngIf="_authService.estaLogueado() && usuario">
+        <span class="usuario-nombre">
+            {{ usuario.nombre | titlecase }}
+            {{ usuario.apellido | titlecase }}
+        </span>
+        <button mat-icon-button matTooltip=" {{ usuario.rol | titlecase }}">
+            <mat-icon>info</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Cerrar sesión" (click)="logout()" color="warn" class="btn-cerrar">
+            <mat-icon>logout</mat-icon>
+        </button>
+    </ng-container>
+</mat-toolbar>
 <router-outlet></router-outlet>
