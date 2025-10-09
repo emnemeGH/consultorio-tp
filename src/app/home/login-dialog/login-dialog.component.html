@@ -4,7 +4,7 @@
     <div mat-dialog-content>
         <mat-form-field appearance="fill" class="campos campo-usuario">
             <mat-label>Usuario</mat-label>
-            <input matInput formControlName="usuario" />
+            <input matInput formControlName="usuario"/>
             <mat-error *ngIf="usuario?.hasError('required')">
                 El usuario es obligatorio
             </mat-error>
