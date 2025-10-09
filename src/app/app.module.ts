@@ -16,12 +16,14 @@ import { LoginDialogComponent } from './home/login-dialog/login-dialog.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { InicioMedicoComponent } from './components/medico/inicio-medico/inicio-medico.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    InicioMedicoComponent
   ],
   imports: [
     BrowserModule,
