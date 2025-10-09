@@ -5,38 +5,28 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomeComponent } from './home/home.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { LoginDialogComponent } from './home/login-dialog/login-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
+
+import { MaterialModule } from './material.module'; // import del módulo centralizado de Material
+
+import { HomeComponent } from './home/home.component';
+import { LoginDialogComponent } from './home/login-dialog/login-dialog.component';
 import { InicioMedicoComponent } from './components/medico/inicio-medico/inicio-medico.component';
+import { InicioPacienteComponent } from './components/paciente/inicio-paciente/inicio-paciente.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginDialogComponent,
-    InicioMedicoComponent
+    InicioMedicoComponent,
+    InicioPacienteComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatIconModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginRequest } from 'src/app/models/login-request.model';
 import { LoginResponse } from 'src/app/models/login-response.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -19,6 +20,8 @@ export class LoginDialogComponent {
 
   private dialogRef = inject(MatDialogRef<LoginDialogComponent>)
   private _authService = inject(AuthService)
+  private _snackBar = inject(MatSnackBar);
+
 
   aceptar() {
     if (this.formularioLogin.invalid) {
@@ -46,7 +49,11 @@ export class LoginDialogComponent {
           // Verifico que haya devuelto un usuario y que no sea null
           if (usuario) {
             this._authService.guardarSesion(response.jwt, usuario);
-            console.log(this._authService.obtenerUsuario())
+
+            this._snackBar.open('Inicio de sesión exitoso', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-success']
+            });
           } else {
             console.error('La respuesta del backend no contiene la información del usuario');
             alert('Ocurrió un error al procesar la información del usuario');
@@ -54,7 +61,10 @@ export class LoginDialogComponent {
 
           this.dialogRef.close(true);
         } else {
-          alert('Usuario o contraseña incorrectos');
+          this._snackBar.open('Usuario o contraseña incorrectos', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
         }
       },
       error: (err) => {
