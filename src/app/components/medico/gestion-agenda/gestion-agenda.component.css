@@ -1,0 +1,103 @@
+.agenda-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Tarjeta de Fecha Estilizada */
+.date-header-card {
+    margin-bottom: 25px;
+    border-left: 6px solid var(--mat-primary-color, #3f51b5); /* Barra de color */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.date-selector-row {
+    padding-top: 15px;
+}
+
+/* Tarjeta de Horarios */
+.horarios-card {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Contenedor de Rangos */
+.horario-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+/* Fila de Rango Individual */
+.modern-rango-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto; /* Espacio para metadatos, 2 campos de hora y botón */
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    transition: background-color 0.2s;
+}
+
+.modern-rango-row:hover {
+    background-color: #fafafa;
+}
+
+.rango-metadata {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+.time-field {
+    width: 100%;
+}
+
+/* Acciones (Guardar, Añadir) */
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 16px;
+    border-top: 1px solid #eee;
+}
+
+.card-actions button {
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .modern-rango-row {
+        grid-template-columns: 1fr 1fr auto;
+        grid-template-rows: auto auto;
+        padding: 10px;
+    }
+    .rango-metadata {
+        grid-column: 1 / -1; /* Ocupa toda la fila */
+        margin-bottom: 5px;
+    }
+}
+@media (max-width: 600px) {
+    .modern-rango-row {
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+    }
+    .rango-metadata {
+        grid-column: 1 / 2;
+    }
+    .time-field {
+        grid-column: 1 / 2;
+    }
+    .modern-rango-row button {
+        grid-column: 2 / 3;
+        grid-row: 2 / 4;
+        align-self: flex-start;
+    }
+}

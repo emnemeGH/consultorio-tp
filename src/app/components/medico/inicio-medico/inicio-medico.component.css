@@ -1,0 +1,55 @@
+.medico-dashboard {
+    min-height: 100vh;
+    background-color: #f4f7f9; /* Fondo muy claro para sensación moderna */
+}
+
+/* Encabezado Principal */
+.main-header {
+    height: 64px;
+    background-color: #ffffff; /* Fondo blanco, no primary */
+    color: #333; /* Texto oscuro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    padding: 0 24px;
+}
+
+.header-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--mat-primary-color, #3f51b5); /* Color primario para el título */
+}
+
+.welcome-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 20px;
+    font-size: 1.05em;
+    color: #555;
+}
+
+.logout-button {
+    border-radius: 20px; /* Botón más suave */
+    font-weight: 600;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+/* Navegación de Pestañas */
+.navigation-tabs {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px; /* Separar la navegación del contenido */
+}
+
+.nav-link {
+    font-size: 1.05em;
+    padding: 0 30px;
+    font-weight: 500;
+}
+
+/* Área de Contenido */
+.content-area {
+    padding: 20px 24px;
+}

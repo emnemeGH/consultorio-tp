@@ -1,0 +1,81 @@
+<div class="agenda-container">
+    <mat-card class="date-header-card">
+        <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">calendar_today</mat-icon>
+            <mat-card-title>Gestión de Agenda</mat-card-title>
+            <mat-card-subtitle>Define tus rangos de atención para el día seleccionado.</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="date-selector-row">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Seleccionar Día</mat-label>
+                <input matInput [matDatepicker]="picker" 
+                       [value]="selectedDate" 
+                       (dateChange)="loadHorarios($event.value)" 
+                       readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    
+    <form [formGroup]="agendaForm" (ngSubmit)="guardarAgenda()">
+        <mat-card class="horarios-card">
+            <mat-card-header>
+                <mat-card-title>Horarios para: {{selectedDate | date: 'fullDate'}}</mat-card-title>
+                <mat-card-subtitle *ngIf="horarios.length > 0">Edita los rangos o añade nuevos.</mat-card-subtitle>
+            </mat-card-header>
+            
+            <mat-card-content>
+                <div formArrayName="horarios" class="horario-list">
+                    
+                    <div *ngFor="let rango of horarios.controls; let i = index" 
+                         [formGroupName]="i" 
+                         class="rango-form-row modern-rango-row mat-elevation-z1">
+                        
+                        <div class="rango-metadata">
+                            <mat-icon color="primary">access_time</mat-icon>
+                            <span>Rango #{{i + 1}} (ID: {{rango.value.id || 'Nuevo'}})</span>
+                        </div>
+                        
+                        <mat-form-field appearance="outline" class="time-field">
+                            <mat-label>Hora Inicio</mat-label>
+                            <input matInput type="time" formControlName="horaEntrada" required> 
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="time-field">
+                            <mat-label>Hora Fin</mat-label>
+                            <input matInput type="time" formControlName="horaSalida" required>
+                        </mat-form-field>
+                        
+                        <button 
+                            mat-icon-button 
+                            color="warn" 
+                            type="button" 
+                            (click)="removerHorario(i)"
+                            matTooltip="Eliminar Rango">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions class="card-actions">
+                <button 
+                  mat-flat-button 
+                  color="accent" 
+                  type="button" 
+                  (click)="agregarNuevoHorario()">
+                  <mat-icon>add</mat-icon> Añadir Rango
+                </button>
+                
+                <button 
+                  mat-flat-button 
+                  color="primary" 
+                  type="submit" 
+                  [disabled]="agendaForm.invalid">
+                  <mat-icon>save</mat-icon> Guardar Agenda
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+</div>

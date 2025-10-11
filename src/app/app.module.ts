@@ -11,17 +11,14 @@ import { MaterialModule } from './shared/material.module'; // import del módulo
 
 import { HomeComponent } from './home/home.component';
 import { LoginDialogComponent } from './home/login-dialog/login-dialog.component';
-import { InicioMedicoComponent } from './components/medico/inicio-medico/inicio-medico.component';
 import { InicioPacienteComponent } from './components/paciente/inicio-paciente/inicio-paciente.component';
 import { InicioAdminComponent } from './components/administrador/inicio-admin/inicio-admin.component';
 import { InicioOperadorComponent } from './components/operador/inicio-operador/inicio-operador.component';
-
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginDialogComponent,
-    InicioMedicoComponent,
     InicioPacienteComponent,
     InicioAdminComponent,
     InicioOperadorComponent

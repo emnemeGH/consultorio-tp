@@ -1,0 +1,157 @@
+.turnos-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Encabezado y Selector de Fecha */
+.turnos-header-card {
+    margin-bottom: 25px;
+    border-top: 6px solid var(--mat-accent-color, #ff4081); /* Barra de color de acento */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.turnos-header-card mat-card-title {
+    font-size: 1.6em;
+}
+
+.date-selector-row {
+    padding-top: 15px;
+}
+
+.date-picker-field {
+    width: 300px;
+}
+
+/* Estilo de la Tabla */
+.table-wrapper {
+    overflow-x: auto; /* Para que sea responsiva en móviles */
+}
+
+.turnos-table {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden; /* Asegura que la sombra se vea bien */
+}
+
+/* Encabezados de la Tabla */
+.turnos-table th.mat-header-cell {
+    background-color: var(--mat-primary-color, #3f51b5);
+    color: white;
+    font-weight: 600;
+    font-size: 1em;
+    padding: 12px;
+}
+
+/* Filas */
+.turnos-row {
+    transition: background-color 0.2s;
+}
+
+.turnos-row:nth-child(even) {
+    background-color: #f7f9fb;
+}
+
+.turnos-row:hover {
+    background-color: #e3f2fd; /* Azul claro al pasar el mouse */
+    cursor: default;
+}
+
+/* Etiquetas de Cobertura */
+.coverage-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #e0f7fa; /* Fondo azul claro */
+    color: #00838f; /* Texto azul oscuro */
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* Mensaje sin Turnos */
+.no-turnos-card {
+    margin-top: 20px;
+    text-align: center;
+    padding: 20px;
+    background-color: #fff3e0; /* Color de advertencia suave */
+    color: #ff9800;
+    border-radius: 8px;
+}.turnos-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Encabezado y Selector de Fecha */
+.turnos-header-card {
+    margin-bottom: 25px;
+    border-top: 6px solid var(--mat-accent-color, #ff4081); /* Barra de color de acento */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.turnos-header-card mat-card-title {
+    font-size: 1.6em;
+}
+
+.date-selector-row {
+    padding-top: 15px;
+}
+
+.date-picker-field {
+    width: 300px;
+}
+
+/* Estilo de la Tabla */
+.table-wrapper {
+    overflow-x: auto; /* Para que sea responsiva en móviles */
+}
+
+.turnos-table {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden; /* Asegura que la sombra se vea bien */
+}
+
+/* Encabezados de la Tabla */
+.turnos-table th.mat-header-cell {
+    background-color: var(--mat-primary-color, #3f51b5);
+    color: white;
+    font-weight: 600;
+    font-size: 1em;
+    padding: 12px;
+}
+
+/* Filas */
+.turnos-row {
+    transition: background-color 0.2s;
+}
+
+.turnos-row:nth-child(even) {
+    background-color: #f7f9fb;
+}
+
+.turnos-row:hover {
+    background-color: #e3f2fd; /* Azul claro al pasar el mouse */
+    cursor: default;
+}
+
+/* Etiquetas de Cobertura */
+.coverage-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #e0f7fa; /* Fondo azul claro */
+    color: #00838f; /* Texto azul oscuro */
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* Mensaje sin Turnos */
+.no-turnos-card {
+    margin-top: 20px;
+    text-align: center;
+    padding: 20px;
+    background-color: #fff3e0; /* Color de advertencia suave */
+    color: #ff9800;
+    border-radius: 8px;
+}
