@@ -1,5 +1,11 @@
 <mat-toolbar class="header">
-    <span>Bienvenido a la clínica virtual</span>
+    <ng-container *ngIf="!_authService.estaLogueado()"> 
+        <span>Bienvenido a la clínica virtual</span>
+    </ng-container>
+    
+    <ng-container *ngIf="_authService.estaLogueado()"> 
+        <span>Clínica virtual</span>
+    </ng-container>
 
     <span class="spacer"></span>
 

@@ -2,10 +2,11 @@
   - Componente de médico
   - Componente de Operador.
   - Registro.
-  - Backend necesario
 
 - **Emanuel**:
   - Componente de admin.
-  - Componente de paciente.
+  - Componente de paciente. 
+    -(Nuevo Turno) En el caso de fecha y hora tienen que ser horarios disponibles.
   - ~~Seguridad en las rutas.~~
   - ~~Login.~~
+  - Backend necesario

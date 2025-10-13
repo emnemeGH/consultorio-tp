@@ -9,10 +9,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
 
 const materialModules = [
   MatToolbarModule,
@@ -28,7 +29,9 @@ const materialModules = [
   MatNativeDateModule,
   MatTableModule,
   MatDividerModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatOptionModule,
+  MatSelectModule
 ];
 
 @NgModule({
