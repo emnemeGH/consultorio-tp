@@ -14,6 +14,9 @@ import { LoginDialogComponent } from './home/login-dialog/login-dialog.component
 import { InicioPacienteComponent } from './components/paciente/inicio-paciente/inicio-paciente.component';
 import { InicioAdminComponent } from './components/administrador/inicio-admin/inicio-admin.component';
 import { InicioOperadorComponent } from './components/operador/inicio-operador/inicio-operador.component';
+import { MisTurnosComponent } from './components/paciente/mis-turnos/mis-turnos.component';
+import { NuevoTurnoComponent } from './components/paciente/nuevo-turno/nuevo-turno.component';
+import { MisDatosComponent } from './components/paciente/mis-datos/mis-datos.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +24,10 @@ import { InicioOperadorComponent } from './components/operador/inicio-operador/i
     LoginDialogComponent,
     InicioPacienteComponent,
     InicioAdminComponent,
-    InicioOperadorComponent
+    InicioOperadorComponent,
+    MisTurnosComponent,
+    NuevoTurnoComponent,
+    MisDatosComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,44 @@
+.contenedor-inicio {
+    text-align: center;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: #2c3e50;
+}
+
+.menu-opciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding-top: 40px;
+}
+
+.boton-opcion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    font-size: 1.05rem;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px #0000001a;
+    transition: all 0.2s ease-in-out;
+}
+
+.boton-opcion:hover {
+    background-color: #e3f2fd;
+    box-shadow: 0 4px 10px #00000026;
+}
+
+.boton-opcion mat-icon {
+    transform: scale(2);
+    margin-bottom: 20px;
+    color: #1565c0;
+}
