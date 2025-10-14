@@ -32,7 +32,7 @@ import { MatTabsModule } from '@angular/material/tabs';
         MatNativeDateModule,
         MatToolbarModule,
         MatTabsModule,
-        MatIconModule // ✅ con esto ya tenés todos los componentes Material disponibles
+        MatIconModule
     ]
 })
 export class MedicoModule { }

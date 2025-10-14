@@ -1,31 +1,30 @@
 <div class="medico-dashboard">
-    <mat-toolbar class="main-header">
-        <span class="header-title">Clínica Virtual</span> 
-        <span class="spacer"></span>
-        
-        <div class="welcome-message">
-            <mat-icon>person</mat-icon>
-            <span>Bienvenido, <strong>{{nombreMedico}}</strong></span>
-        </div>
-
-        <button mat-flat-button color="warn" class="logout-button" (click)="cerrarSesion()">
-            <mat-icon>logout</mat-icon> Cerrar Sesión
-        </button>
-    </mat-toolbar>
-
-    <nav mat-tab-nav-bar class="navigation-tabs">
-        <a mat-tab-link
-           *ngFor="let link of navLinks"
-           [routerLink]="link.path"
-           routerLinkActive #rla="routerLinkActive"
-           [active]="rla.isActive"
-           class="nav-link">
-          {{link.label}}
-        </a>
-    </nav>
-
-    <div class="content-area">
-        <router-outlet></router-outlet> 
+  <mat-toolbar class="main-header">
+    <span class="header-title">Clínica Virtual</span> 
+    <span class="spacer"></span>
+    
+    <div class="welcome-message">
+      <mat-icon>person</mat-icon>
+      <span>Bienvenido, <strong>{{ nombreMedico }}</strong></span>
     </div>
+  </mat-toolbar>
 
+  <!-- ✅ Corregido -->
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="navigation-tabs">
+    <a mat-tab-link
+       *ngFor="let link of navLinks"
+       [routerLink]="link.path"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive"
+       class="nav-link">
+      {{ link.label }}
+    </a>
+  </nav>
+  
+  <!-- ✅ Panel requerido -->
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+
+  <div class="content-area">
+    <router-outlet></router-outlet> 
+  </div>
 </div>

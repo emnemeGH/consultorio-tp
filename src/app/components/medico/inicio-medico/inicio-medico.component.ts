@@ -35,13 +35,4 @@ export class InicioMedicoComponent implements OnInit {
         this.nombreMedico = `Dr/a. ${usuario.nombre} ${usuario.apellido}`;
     }
   }
-
-  cerrarSesion(): void {
-    // 1. Limpiar el token/ID del Local Storage.
-    this.authService.cerrarSesion();
-    
-    // 2. Notificar y navegar a la página principal (no logueada).
-    alert('Sesión cerrada correctamente.');
-    this.router.navigate(['/']); // Navega a la ruta base de la app
-  }
 }

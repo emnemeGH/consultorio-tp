@@ -1,62 +1,108 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs'; // ✅ forkJoin ya importado
-// Ajuste de las rutas de importación de modelos
-import { RangoHorario, AgendaPayload } from '../models/medico/rango-horario.model'; 
-// Si la carpeta de modelos está en la raíz, el path debe ser:
-// import { RangoHorario, AgendaPayload } from '../models/medico/rango-horario.model'; 
+// medico.service.ts
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // Importar HttpHeaders
+import { Observable, forkJoin } from 'rxjs';
+import { RangoHorario, AgendaPayload } from '../models/medico/rango-horario.model';
+import { ApiResponse } from '../models/apiResponse.model';
+import { Turno } from '../models/medico/turno.model';
+import { AuthService } from 'src/app/services/auth.service'; // Importar AuthService
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicoService {
-  private apiUrl = 'http://localhost:4000/api'; 
-  private idMedico: number = 2; // Temporal
-  private especialidadId: number = 1; // Temporal
+  private apiUrl = 'http://localhost:4000/api';
 
-  constructor(private http: HttpClient) { }
+  // Inyecciones usando inject() en lugar del constructor
+  private http = inject(HttpClient);
+  private authService = inject(AuthService); // Inyectar AuthService
 
-  getAgendaCompleta(idMedico: number): Observable<any> {
-      return this.http.get<any>(`${this.apiUrl}/obtenerAgenda/${idMedico}`);
+  constructor() { } // Constructor vacío o si necesitas alguna inicialización que no sea inyección
+
+  /**
+   * 📅 Obtiene la agenda completa del médico
+   */
+  getAgendaCompleta(idMedico: number): Observable<ApiResponse<RangoHorario[]>> {
+    // NOTA: Este método también requiere el token si el backend lo pide
+    const token = this.authService.obtenerToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
+
+    return this.http.get<ApiResponse<RangoHorario[]>>(
+      `${this.apiUrl}/obtenerAgenda/${idMedico}`,
+      { headers } // Pasar los headers
+    );
+  }
+
+  /**
+   * 🕒 Obtiene los turnos del médico para una fecha específica
+   */
+  obtenerTurnosMedico(idMedico: number, fecha: string): Observable<ApiResponse<Turno[]>> {
+
+    const token = this.authService.obtenerToken();
+
+    // 1. Verificar si el token existe
+    if (!token) {
+      // Si no hay token, el request fallará en el backend.
+      throw new Error("Token de autenticación no encontrado.");
     }
-    
-    // 🟢 FUNCIÓN DE LECTURA DE TURNOS (Añadiéndola por si se te había pasado)
-    /**
-     * Obtiene la lista de turnos para un médico y una fecha específica.
-     * Llama al endpoint POST /obtenerTurnosMedico
-     */
-    obtenerTurnosMedico(idMedico: number, fecha: string): Observable<any> {
-      const body = { id_medico: idMedico, fecha: fecha };
-      return this.http.post<any>(`${this.apiUrl}/obtenerTurnosMedico`, body);
-    }
 
-  // --- LÓGICA DE AGENDA (Guardar) ---
-  saveAgenda(payload: AgendaPayload): Observable<any[]> {
-    const requests: Observable<any>[] = [];
-    const fechaAgenda = payload.fecha;
+    // 2. Crear los headers con el token de autenticación
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`);
 
-    payload.rangos.forEach(rango => {
+    // 3. Crear el cuerpo de la petición
+    const body = { id_medico: idMedico, fecha };
+
+    // 4. Realizar la petición POST incluyendo los headers
+    return this.http.post<ApiResponse<Turno[]>>(
+      `${this.apiUrl}/obtenerTurnosMedico`,
+      body,
+      { headers: headers } // CLAVE: Pasar el objeto HttpHeaders
+    );
+  }
+
+  /**
+   * 💾 Crea o modifica una agenda completa
+   */
+  saveAgenda(payload: AgendaPayload): Observable<ApiResponse<unknown>[]> {
+    const requests: Observable<ApiResponse<unknown>>[] = [];
+
+    // NOTA: Aquí también DEBES enviar el token en cada petición POST/PUT
+    const token = this.authService.obtenerToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
+
+    payload.rangos.forEach((rango: RangoHorario) => {
       const registroAgenda = {
-        id_medico: this.idMedico,
-        id_especialidad: this.especialidadId, 
-        fecha: fechaAgenda,
-        // 🚨 IMPORTANTE: Usar 'hora_entrada' y 'hora_salida' que espera el backend
-        // Aunque el modelo tiene horaEntrada/horaSalida, el backend espera el formato snake_case:
-        hora_entrada: rango.horaEntrada, // 👈 Ajuste aquí
-        hora_salida: rango.horaSalida,   // 👈 Ajuste aquí
+        id_medico: payload.id_medico,
+        id_especialidad: payload.id_especialidad,
+        fecha: payload.fecha,
+        hora_entrada: rango.horaEntrada,
+        hora_salida: rango.horaSalida,
       };
 
       if (rango.id) {
+        // 🟢 PUT
         requests.push(
-          this.http.put(`${this.apiUrl}/modificarAgenda/${rango.id}`, registroAgenda)
+          this.http.put<ApiResponse<unknown>>(
+            `${this.apiUrl}/modificarAgenda/${rango.id}`,
+            registroAgenda,
+            { headers } // Incluir headers
+          )
         );
       } else {
+        // 🟢 POST
         requests.push(
-          this.http.post(`${this.apiUrl}/crearAgenda`, registroAgenda)
+          this.http.post<ApiResponse<unknown>>(
+            `${this.apiUrl}/crearAgenda`,
+            registroAgenda,
+            { headers } // Incluir headers
+          )
         );
       }
     });
 
+    // 🟢 forkJoin devuelve un array de las respuestas tipadas
     return forkJoin(requests);
   }
 }

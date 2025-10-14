@@ -20,7 +20,7 @@ const routes: Routes = [
 
   { path: 'inicio-admin', component: InicioAdminComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
   { path: 'inicio-operador', component: InicioOperadorComponent, canActivate: [rolGuard], data: { roles: ['operador'] } },
-  { path: 'inicio-medico', loadChildren: () => import('./components/medico/medico.module').then(m => m.MedicoModule), canActivate: [rolGuard], data: { roles: ['medico'] } }
+  { path: 'inicio-medico', loadChildren: () => import('./components/medico/medico.module').then(m => m.MedicoModule)}
 ];
 
 @NgModule({

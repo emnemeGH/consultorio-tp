@@ -1,10 +1,10 @@
 export interface Turno {
-  id: number;
+  id_turno: number;
+  nombre_paciente: string;
+  fecha_nacimiento: string;
+  nombre_medico: string;
+  fecha: string;
   hora: string;
   nota: string;
-  
-  // paciente
-  nombrePaciente: string; 
-  apellidoPaciente: string;
-  edadPaciente: number; 
+  cobertura: string;
 }
