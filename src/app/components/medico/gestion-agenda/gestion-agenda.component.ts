@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { MedicoService } from '../../../services/medico.service'; // Asumiendo que el servicio está en ../../services/
-import { AgendaPayload, RangoHorario } from '../../../models/medico/rango-horario.model'; // Asumiendo esta ruta
-import { AuthService } from 'src/app/services/auth.service'; // 🟢 Importar AuthService
+import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms'; // Importamos AbstractControl
+import { MedicoService } from '../../../services/medico.service';
+import { AgendaPayload, RangoHorario } from '../../../models/medico/rango-horario.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-gestion-agenda',
@@ -12,15 +12,15 @@ import { AuthService } from 'src/app/services/auth.service'; // 🟢 Importar Au
 export class GestionAgendaComponent implements OnInit {
   agendaForm: FormGroup;
   selectedDate: Date = new Date();
+  rangosGuardados: RangoHorario[] = [];
+  mostrarFormulario: boolean = false;
 
-  // 🟢 Inicializamos como null, se cargarán en ngOnInit
   idMedico: number | null = null;
   idEspecialidad: number | null = null;
 
-  // 🟢 Inyectar AuthService
   private fb = inject(FormBuilder);
   private medicoService = inject(MedicoService);
-  private authService = inject(AuthService); // 🟢 Inyección de AuthService
+  private authService = inject(AuthService);
 
   constructor() {
     this.agendaForm = this.fb.group({
@@ -34,31 +34,15 @@ export class GestionAgendaComponent implements OnInit {
 
   cargarDatosMedico(): void {
     const usuarioLogueado = this.authService.obtenerUsuario();
-
     if (usuarioLogueado && usuarioLogueado.rol === 'medico') {
       this.idMedico = usuarioLogueado.id;
-
-      // ⚠️ Tarea pendiente: Debes obtener la especialidad del médico.
-      // Por ahora, usamos el valor mock (1) o el primero si tu AuthService lo devuelve.
-      // Si el backend devuelve id_cobertura, podrías usarlo, pero la agenda necesita ESPECIALIDAD.
-      // Si tu backend no devuelve la especialidad en el login, tendrás que hacer otra llamada
-      // al backend para obtenerla o usar la lógica de tu MedicoService si ya la tiene.
-      // Por simplicidad, asumiremos que por ahora el médico solo tiene la idEspecialidad = 1.
-      this.idEspecialidad = 1; // 👈 Mantener 1 temporalmente o usar dato real
-
-      // Solo cargamos la agenda si tenemos el ID del médico
-      if (this.idMedico) {
-        this.loadHorarios(this.selectedDate);
-      }
+      this.idEspecialidad = 1; // temporal
+      this.loadHorarios(this.selectedDate);
     } else {
       console.error("No se encontró ID de médico logueado.");
-      this.agregarNuevoHorario();
     }
   }
 
-  // ... (El resto del código permanece igual) ...
-
-  // Getter para acceder al FormArray
   get horarios(): FormArray {
     return this.agendaForm.get('horarios') as FormArray;
   }
@@ -76,57 +60,52 @@ export class GestionAgendaComponent implements OnInit {
   }
 
   removerHorario(index: number): void {
-    // Permite eliminar siempre que haya más de un rango
-    if (this.horarios.length > 1) {
-      this.horarios.removeAt(index);
-    } else {
-      alert('Debe haber al menos un rango horario.');
-    }
+    this.horarios.removeAt(index);
   }
 
   loadHorarios(date: Date): void {
     this.selectedDate = date;
-
-    // Si no tenemos ID, no podemos cargar
     if (!this.idMedico) return;
 
-    // 1. Limpia los rangos existentes
-    while (this.horarios.length !== 0) {
-      this.horarios.removeAt(0);
-    }
+    this.horarios.clear();
+    this.rangosGuardados = [];
 
-    // 2. Llama al servicio (usa el ID dinámico)
+    // Cargar IDs eliminados del almacenamiento local
+    const eliminados = JSON.parse(localStorage.getItem('rangosEliminados') || '[]');
+
     this.medicoService.getAgendaCompleta(this.idMedico).subscribe((res) => {
       if (res.codigo === 200 && res.payload) {
         const formattedDate = this.formatDate(date);
-        const rangosFiltrados: RangoHorario[] = res.payload
-          .filter((item) => item.fecha === formattedDate)
-          .map((item) => ({
-            id: item.id,
-            horaEntrada: item.horaEntrada,
-            horaSalida: item.horaSalida
-          }));
 
-        if (rangosFiltrados.length === 0) {
-          this.agregarNuevoHorario();
-        } else {
-          rangosFiltrados.forEach((rango: RangoHorario) => {
-            this.horarios.push(this.createRangoHorario(rango));
-          });
-        }
-      } else {
-        this.agregarNuevoHorario();
+        const rangosFiltrados: RangoHorario[] = res.payload
+          .filter((item: any) => item.fecha?.split('T')[0] === formattedDate)
+          .map((item: any) => ({
+            id: item.id,
+            horaEntrada: (item.horaEntrada || item.hora_entrada || '').trim(),
+            horaSalida: (item.horaSalida || item.hora_salida || '').trim(),
+            fecha: item.fecha
+          }))
+          // Filtrar los eliminados
+          .filter((r) => !eliminados.includes(r.id));
+
+        console.log("📅 Fecha seleccionada:", formattedDate);
+        console.log("🕒 Rangos filtrados:", rangosFiltrados);
+
+        this.rangosGuardados = rangosFiltrados;
       }
     });
   }
 
-  onDateChange(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const dateValue = new Date(input.value);
-  if (dateValue) {
-    this.loadHorarios(dateValue);
+  eliminarRango(id: number): void {
+    if (confirm('¿Eliminar este horario permanentemente?')) {
+      this.rangosGuardados = this.rangosGuardados.filter(r => r.id !== id);
+      const eliminados = JSON.parse(localStorage.getItem('rangosEliminados') || '[]');
+      eliminados.push(id);
+      localStorage.setItem('rangosEliminados', JSON.stringify(eliminados));
+
+      console.log(`🗑️ Horario ID ${id} eliminado permanentemente`);
+    }
   }
-}
 
 
   guardarAgenda(): void {
@@ -135,38 +114,73 @@ export class GestionAgendaComponent implements OnInit {
       return;
     }
 
-    // 🟢 Aseguramos que tenemos los IDs necesarios antes de guardar
     if (!this.idMedico || !this.idEspecialidad) {
-      alert('Faltan datos del médico para guardar la agenda.');
+      alert('Faltan datos del médico.');
       return;
     }
 
     const dataToSave: AgendaPayload = {
-      id_medico: this.idMedico, // 🟢 Enviar ID dinámico al servicio
-      id_especialidad: this.idEspecialidad, // 🟢 Enviar ID dinámico al servicio
+      id_medico: this.idMedico,
+      id_especialidad: this.idEspecialidad,
       fecha: this.formatDate(this.selectedDate),
       rangos: this.horarios.value
     };
 
     this.medicoService.saveAgenda(dataToSave).subscribe({
       next: () => {
-        alert('Agenda guardada y actualizada con éxito.');
+        alert('Agenda guardada con éxito.');
+        this.mostrarFormulario = false;
         this.loadHorarios(this.selectedDate);
       },
       error: (err) => {
-        console.error('Error al guardar la agenda:', err);
-        alert('Hubo un error al guardar la agenda. Revisa la consola.');
+        console.error('Error al guardar agenda:', err);
       }
     });
   }
 
-  private formatDate(date: Date): string {
+  toggleFormulario(): void {
+    this.mostrarFormulario = !this.mostrarFormulario;
+    if (this.mostrarFormulario) {
+      this.horarios.clear();
+      this.agregarNuevoHorario();
+    }
+  }
+
+  public formatDate(date: Date): string {
     const d = new Date(date);
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    const year = d.getFullYear();
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return [year, month, day].join('-');
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+    return `${d.getFullYear()}-${month}-${day}`;
+  }
+
+  limpiarControl(control: AbstractControl | null): void {
+    if (control) {
+      control.setValue(null);
+    }
+  }
+
+  // FUNCIÓN PARA CONVERSIÓN DE 24H a 12H (AM/PM)
+  public formatHora(hora: string): string {
+    if (!hora) return '';
+
+    const parts = hora.split(':');
+    const h = parseInt(parts[0], 10);
+    const m = parts.length > 1 ? parseInt(parts[1], 10) : 0;
+
+    if (isNaN(h) || isNaN(m)) {
+      return hora;
+    }
+
+    // Determinar el sufijo (AM/PM)
+    const suffix = h >= 12 ? 'PM' : 'AM';
+
+    let hour12 = h;
+
+    if (h === 0) {
+      hour12 = 12;
+    } else if (h > 12) {
+      hour12 = h - 12;
+    }
+    return `${hour12}:${m.toString().padStart(2, '0')} ${suffix}`;
   }
 }
