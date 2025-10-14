@@ -4,9 +4,10 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpResponse
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -25,10 +26,19 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(reqClone).pipe(
+      tap(event => {
+        if (event instanceof HttpResponse) {
+          if (event.body?.codigo === -1 && event.body?.mensaje === 'Token expirado') {
+            alert('Se vencio el token')
+            this._authService.cerrarSesion();
+            this.router.navigate(['']);
+          }
+        }
+      }),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           this._authService.cerrarSesion();
-          this.router.navigate(['/login']);
+          this.router.navigate(['']);
         }
         return throwError(() => error);
       })

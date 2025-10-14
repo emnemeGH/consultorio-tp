@@ -6,14 +6,16 @@
         <mat-form-field appearance="outline">
             <mat-label>Especialidad</mat-label>
             <mat-select formControlName="especialidad">
-                <mat-option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</mat-option>
+                <mat-option *ngFor="let esp of especialidades" [value]="esp.id">{{ esp.descripcion }}</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>Profesional</mat-label>
             <mat-select formControlName="profesional">
-                <mat-option *ngFor="let prof of profesionales" [value]="prof">{{ prof }}</mat-option>
+                <mat-option *ngFor="let prof of profesionales" [value]="prof.id_medico">
+                    {{ prof.nombre }} {{ prof.apellido}}
+                </mat-option>
             </mat-select>
         </mat-form-field>
 

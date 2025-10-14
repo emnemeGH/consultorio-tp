@@ -1,11 +1,12 @@
 // medico.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; // Importar HttpHeaders
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, map } from 'rxjs';
 import { RangoHorario, AgendaPayload } from '../models/medico/rango-horario.model';
 import { ApiResponse } from '../models/apiResponse.model';
 import { Turno } from '../models/medico/turno.model';
 import { AuthService } from 'src/app/services/auth.service'; // Importar AuthService
+import { Medico } from '../models/medico/medico.model';
 
 @Injectable({
   providedIn: 'root'
@@ -104,5 +105,10 @@ export class MedicoService {
 
     // 🟢 forkJoin devuelve un array de las respuestas tipadas
     return forkJoin(requests);
+  }
+
+  getMedicosPorEspecialidad(idEspecialidad: number): Observable<Medico[]> {
+    return this.http.get<ApiResponse<Medico[]>>(`${this.apiUrl}/obtenerMedicoPorEspecialidad/${idEspecialidad}`)
+      .pipe(map(res => res.payload));
   }
 }

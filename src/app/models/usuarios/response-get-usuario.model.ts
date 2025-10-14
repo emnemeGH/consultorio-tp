@@ -1,11 +1,5 @@
 import { ResponseUsuario } from "../log-in/response-usuario.model";
 
-export interface ResponseGetUsuario {
-    codigo:  number;
-    mensaje: string;
-    payload: UsuarioCompleto[];
-}
-
 export interface UsuarioCompleto extends ResponseUsuario{
     fecha_nacimiento: Date;
     password:         string;

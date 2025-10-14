@@ -1,7 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Especialidad } from 'src/app/models/especialidad/especialidad.model';
+import { Medico } from 'src/app/models/medico/medico.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { EspecialidadService } from 'src/app/services/especialidad.service';
+import { MedicoService } from 'src/app/services/medico.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -12,13 +16,15 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class NuevoTurnoComponent implements OnInit {
   turnoForm: FormGroup;
 
-  especialidades = ['Cardiología', 'Dermatología', 'Pediatría', 'Clínica Médica'];
-  profesionales = ['Dr. Pérez', 'Dra. Gómez', 'Dr. Fernández', 'Dra. Torres'];
+  especialidades: Especialidad[] = [];
+  profesionales: Medico[] = [];
 
   private _authService = inject(AuthService)
   private router = inject(Router)
   private fb = inject(FormBuilder)
   private _usuarioService = inject(UsuarioService)
+  private _especialidadService = inject(EspecialidadService);
+  private _medicoService = inject(MedicoService)
 
   constructor() {
 
@@ -34,16 +40,19 @@ export class NuevoTurnoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const usuario = this._authService.obtenerUsuario();
-    if (usuario) {
-      this._usuarioService.obtenerUsuarioCompleto(usuario.id).subscribe(u => {
-        if (u) {
-          this.cobertura?.setValue(u.nombre_cobertura);
-        }
-      });
-    }
+    this.obtenerCobertura()
 
     this.desactivarCamposSiguientes()
+
+    this.obtenerEspecialidades()
+
+    this.especialidad?.valueChanges.subscribe((idEspecialidad: number) => {
+      if (idEspecialidad) {
+        this.obtenerMedicos(idEspecialidad);
+      } else {
+        this.profesionales = [];
+      }
+    });
   }
 
   aceptar() {
@@ -78,6 +87,37 @@ export class NuevoTurnoComponent implements OnInit {
           }
         }
       });
+    });
+  }
+
+  obtenerCobertura() {
+    const usuario = this._authService.obtenerUsuario();
+    if (usuario) {
+      this._usuarioService.obtenerUsuarioCompleto(usuario.id).subscribe(u => {
+        if (u) {
+          this.cobertura?.setValue(u.nombre_cobertura);
+        }
+      });
+    }
+  }
+
+  obtenerEspecialidades() {
+    this._especialidadService.getEspecialidades().subscribe({
+      next: (especialidades: Especialidad[]) => {
+        this.especialidades = especialidades;
+      },
+      error: (err) => {
+        console.error('Error HTTP al obtener especialidades:', err);
+      }
+    });
+  }
+
+  obtenerMedicos(idEspecialidad: number): void {
+    this._medicoService.getMedicosPorEspecialidad(idEspecialidad).subscribe({
+      next: (medicos) => {
+        this.profesionales = medicos;
+      },
+      error: (err) => console.error('Error obteniendo médicos:', err)
     });
   }
 

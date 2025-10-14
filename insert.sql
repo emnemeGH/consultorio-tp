@@ -70,3 +70,38 @@ INSERT INTO turno (nota, id_agenda, fecha, hora, id_paciente, id_cobertura) VALU
 ('Consulta inicial',3,'2025-10-15','10:30',2,2),
 ('Chequeo de rutina',4,'2025-10-15','14:30',2,2),
 ('Control pediátrico',5,'2025-10-16','09:30',2,2);
+
+-- ------------------------------
+-- Insertar más médicos
+-- ------------------------------
+INSERT INTO usuario (apellido, nombre, fecha_nacimiento, password, rol, email, telefono, dni, id_cobertura) VALUES
+('Lopez','Ana','1982-05-05','ana','medico','ana@example.com','5551111','ana',1),
+('Gomez','Pedro','1978-11-12','pedro','medico','pedro@example.com','5552222','pedro',2),
+('Fernandez','Lucia','1985-03-21','lucia','medico','lucia@example.com','5553333','lucia',3),
+('Martinez','Diego','1990-07-18','diego','medico','diego@example.com','5554444','diego',4),
+('Sanchez','Carla','1979-09-09','carla','medico','carla@example.com','5555555','carla',5);
+
+-- ------------------------------
+-- Asociar médicos con especialidades
+-- ------------------------------
+-- id_medico 5 = Ana -> Cardiología
+-- id_medico 6 = Pedro -> Dermatología
+-- id_medico 7 = Lucia -> Pediatría
+-- id_medico 8 = Diego -> Clínica Médica
+-- id_medico 9 = Carla -> Neurología
+INSERT INTO medico_especialidad (id_medico, id_especialidad) VALUES
+(5,1),
+(6,2),
+(7,3),
+(8,4),
+(9,5);
+
+-- ------------------------------
+-- Opcional: agregar más agendas para los nuevos médicos
+-- ------------------------------
+INSERT INTO agenda (hora_entrada, hora_salida, fecha, id_medico, id_especialidad) VALUES
+('08:00','12:00','2025-10-14',5,1),
+('13:00','17:00','2025-10-14',6,2),
+('09:00','13:00','2025-10-15',7,3),
+('10:00','14:00','2025-10-15',8,4),
+('09:30','12:30','2025-10-16',9,5);
