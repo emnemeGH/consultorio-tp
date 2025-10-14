@@ -7,6 +7,7 @@ import { ApiResponse } from '../models/apiResponse.model';
 import { Turno } from '../models/medico/turno.model';
 import { AuthService } from 'src/app/services/auth.service'; // Importar AuthService
 import { Medico } from '../models/medico/medico.model';
+import { Agenda } from '../models/agenda/agenda.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,24 +15,11 @@ import { Medico } from '../models/medico/medico.model';
 export class MedicoService {
   private apiUrl = 'http://localhost:4000/api';
 
-  // Inyecciones usando inject() en lugar del constructor
   private http = inject(HttpClient);
-  private authService = inject(AuthService); // Inyectar AuthService
+  private authService = inject(AuthService); 
 
-  constructor() { } // Constructor vacío o si necesitas alguna inicialización que no sea inyección
-
-  /**
-   * 📅 Obtiene la agenda completa del médico
-   */
-  getAgendaCompleta(idMedico: number): Observable<ApiResponse<RangoHorario[]>> {
-    // NOTA: Este método también requiere el token si el backend lo pide
-    const token = this.authService.obtenerToken();
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
-
-    return this.http.get<ApiResponse<RangoHorario[]>>(
-      `${this.apiUrl}/obtenerAgenda/${idMedico}`,
-      { headers } // Pasar los headers
-    );
+  getAgendaCompleta(idMedico: number): Observable<ApiResponse<Agenda[]>> {
+    return this.http.get<ApiResponse<Agenda[]>>(`${this.apiUrl}/obtenerAgenda/${idMedico}`);
   }
 
   /**

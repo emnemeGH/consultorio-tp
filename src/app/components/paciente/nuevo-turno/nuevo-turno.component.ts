@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Agenda } from 'src/app/models/agenda/agenda.model';
 import { Especialidad } from 'src/app/models/especialidad/especialidad.model';
 import { Medico } from 'src/app/models/medico/medico.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,13 +12,19 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 @Component({
   selector: 'app-nuevo-turno',
   templateUrl: './nuevo-turno.component.html',
-  styleUrls: ['./nuevo-turno.component.css']
+  styleUrls: ['./nuevo-turno.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush //Por rendimiento, me estaba andando mal
 })
 export class NuevoTurnoComponent implements OnInit {
   turnoForm: FormGroup;
 
   especialidades: Especialidad[] = [];
   profesionales: Medico[] = [];
+  id_cobertura: Number = 0
+
+  agendaCompletaMedico: Agenda[] = []; 
+  agendaDiaSeleccionado: Agenda[] = [];      
+  horasDisponibles: string[] = [];
 
   private _authService = inject(AuthService)
   private router = inject(Router)
@@ -53,12 +60,33 @@ export class NuevoTurnoComponent implements OnInit {
         this.profesionales = [];
       }
     });
+
+    // Nos suscribimos a los cambios en profesional y al getagenda completa del profesional
+    // todos los registros de agenda con el id del medico se guardan en agendaCompletaMedico 
+    this.profesional?.valueChanges.subscribe((idMedico: number) => {
+      if (idMedico) {
+        this._medicoService.getAgendaCompleta(idMedico).subscribe(resp => {
+          this.agendaCompletaMedico = resp.payload;
+        });
+      } else {
+        this.agendaCompletaMedico = []
+      }
+    });
+
+    this.fecha?.valueChanges.subscribe(fechaSeleccionada => {
+      this.filtrarAgendaPorFecha(fechaSeleccionada);
+    });
   }
 
   aceptar() {
     if (this.turnoForm.valid) {
       console.log('Datos del turno:', this.turnoForm.value);
       // Más adelante: abrir el popup de confirmación
+    }
+
+    if (!this.horasDisponibles.includes(this.turnoForm.value.hora)) {
+      alert('La hora seleccionada no está dentro de la agenda del médico.');
+      return;
     }
   }
 
@@ -96,6 +124,7 @@ export class NuevoTurnoComponent implements OnInit {
       this._usuarioService.obtenerUsuarioCompleto(usuario.id).subscribe(u => {
         if (u) {
           this.cobertura?.setValue(u.nombre_cobertura);
+          this.id_cobertura = u.id_cobertura
         }
       });
     }
@@ -118,6 +147,43 @@ export class NuevoTurnoComponent implements OnInit {
         this.profesionales = medicos;
       },
       error: (err) => console.error('Error obteniendo médicos:', err)
+    });
+  }
+
+  filtrarAgendaPorFecha(fechaSeleccionada: Date) {
+    if (!fechaSeleccionada) return;
+
+    const fechaStr = fechaSeleccionada.toISOString().split('T')[0];
+
+    // Guardamos los horarios que hay en la agenda completa que coiniciden con el dia selccionado
+    this.agendaDiaSeleccionado = this.agendaCompletaMedico.filter(agenda => {
+      const agendaFechaStr = new Date(agenda.fecha).toISOString().split('T')[0];
+      return agendaFechaStr === fechaStr;
+    });
+
+    this.generarHorasDisponibles();
+  }
+
+  generarHorasDisponibles() {
+    this.horasDisponibles = [];
+
+    this.agendaDiaSeleccionado.forEach(agenda => {
+      // Si la horaInicio es 11:30
+      // Creamos 4 variables, cada una contiene un numero nomas, por ej horaInicio es 11
+      // minutoInicio es 30 gracias a split y con map los hacemos number
+      let [horaInicio, minutoInicio] = agenda.hora_entrada.split(':').map(Number);
+      const [horaFin, minutoFin] = agenda.hora_salida.split(':').map(Number);
+
+      while (horaInicio < horaFin || (horaInicio === horaFin && minutoInicio < minutoFin)) {
+        this.horasDisponibles.push(
+          horaInicio.toString().padStart(2, '0') + ':' + minutoInicio.toString().padStart(2, '0')
+        );
+        minutoInicio += 30;
+        if (minutoInicio >= 60) {
+          horaInicio++;
+          minutoInicio = 0;
+        }
+      }
     });
   }
 

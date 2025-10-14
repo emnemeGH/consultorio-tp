@@ -27,13 +27,15 @@
         <mat-form-field appearance="outline">
             <mat-label>Fecha</mat-label>
             <mat-datepicker #picker></mat-datepicker>
-            <input matInput [matDatepicker]="picker" formControlName="fecha">
+            <input matInput [matDatepicker]="picker" formControlName="fecha" readonly>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>Hora</mat-label>
-            <input matInput type="time" formControlName="hora">
+            <mat-select formControlName="hora">
+                <mat-option *ngFor="let hora of horasDisponibles" [value]="hora">{{hora}}</mat-option>
+            </mat-select>
             <mat-error *ngIf="hora?.hasError('required')">
                 El campo hora no puede estar vacío
             </mat-error>
