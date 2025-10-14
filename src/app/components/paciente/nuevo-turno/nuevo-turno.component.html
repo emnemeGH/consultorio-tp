@@ -1,1 +1,53 @@
-<p>nuevo-turno works!</p>
+<div class="nuevo-turno-container">
+    <h2>Nuevo Turno</h2>
+
+    <form [formGroup]="turnoForm" class="turno-form">
+
+        <mat-form-field appearance="outline">
+            <mat-label>Especialidad</mat-label>
+            <mat-select formControlName="especialidad">
+                <mat-option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Profesional</mat-label>
+            <mat-select formControlName="profesional">
+                <mat-option *ngFor="let prof of profesionales" [value]="prof">{{ prof }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Cobertura</mat-label>
+            <input matInput formControlName="cobertura">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha</mat-label>
+            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="picker" formControlName="fecha">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Hora</mat-label>
+            <input matInput type="time" formControlName="hora">
+            <mat-error *ngIf="hora?.hasError('required')">
+                El campo hora no puede estar vacío
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Motivo</mat-label>
+            <textarea matInput formControlName="notas" rows="3" placeholder="Motivo del turno"></textarea>
+            <mat-error *ngIf="notas?.hasError('required')">
+                El campo motivo no puede estar vacío
+            </mat-error>
+        </mat-form-field>
+
+        <div class="botones">
+            <button mat-raised-button color="primary" (click)="aceptar()" [disabled]="!turnoForm.valid">Aceptar</button>
+            <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+        </div>
+    </form>
+</div>

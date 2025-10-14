@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoginRequest } from '../models/login-request.model';
-import { LoginResponse } from '../models/login-response.model';
-import { ResponseUsuario } from '../models/response-usuario.model';
+import { LoginRequest } from '../models/log-in/login-request.model';
+import { LoginResponse } from '../models/log-in/login-response.model';
+import { ResponseUsuario } from '../models/log-in/response-usuario.model';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { ResponseUsuario } from './models/response-usuario.model';
+import { ResponseUsuario } from './models/log-in/response-usuario.model';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';

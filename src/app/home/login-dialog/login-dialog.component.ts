@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { LoginRequest } from 'src/app/models/login-request.model';
-import { LoginResponse } from 'src/app/models/login-response.model';
+import { LoginRequest } from 'src/app/models/log-in/login-request.model';
+import { LoginResponse } from 'src/app/models/log-in/login-response.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
