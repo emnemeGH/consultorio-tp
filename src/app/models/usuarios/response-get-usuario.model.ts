@@ -1,7 +1,7 @@
 import { ResponseUsuario } from "../log-in/response-usuario.model";
 
 export interface UsuarioCompleto extends ResponseUsuario{
-    fecha_nacimiento: Date;
+    fecha_nacimiento: string;
     password:         string;
     email:            string;
     telefono:         string;

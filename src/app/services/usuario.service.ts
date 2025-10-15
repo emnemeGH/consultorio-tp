@@ -13,12 +13,9 @@ import { CrearUsuarioRequest } from '../models/usuarios/crear-usuario-request.mo
 export class UsuarioService {
 
   private http = inject(HttpClient);
-  private authService = inject(AuthService);
   private apiUrl = 'http://localhost:4000/api';
 
   obtenerUsuarioCompleto(id: number): Observable<UsuarioCompleto | null> {
-    const token = this.authService.obtenerToken() || '';
-
     return this.http.get<ApiResponse<UsuarioCompleto[]>>(`${this.apiUrl}/obtenerUsuario/${id}`).pipe(
       map(res => {
         if (res.codigo === 200) {
@@ -37,5 +34,9 @@ export class UsuarioService {
 
   crearUsuario(usuario: CrearUsuarioRequest): Observable<ApiResponse<{ id_usuario: number }>> {
     return this.http.post<ApiResponse<{ id_usuario: number }>>(`${this.apiUrl}/crearUsuario`, usuario);
+  }
+
+  actualizarUsuario(id: number, usuario: Partial<UsuarioCompleto>) {
+    return this.http.put<ApiResponse<null>>(`${this.apiUrl}/actualizarUsuario/${id}`, usuario);
   }
 }

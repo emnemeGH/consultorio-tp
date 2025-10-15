@@ -1,1 +1,64 @@
-<p>mis-datos works!</p>
+<div class="registro-container">
+    <mat-card class="registro-card">
+        <mat-card-title>Mis Datos</mat-card-title>
+        <mat-card-content>
+            <form *ngIf="actualizarForm" [formGroup]="actualizarForm" (ngSubmit)="guardarCambios()">
+                <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Apellido</mat-label>
+                        <input matInput formControlName="apellido" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>DNI</mat-label>
+                        <input matInput formControlName="dni" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Fecha de Nacimiento</mat-label>
+                        <input matInput type="date" formControlName="fecha_nacimiento" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" formControlName="email" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput formControlName="telefono" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput type="password" formControlName="password" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Obra Social</mat-label>
+                        <mat-select formControlName="id_cobertura" required>
+                            <mat-option *ngFor="let c of coberturas" [value]="c.id">
+                                {{ c.nombre }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="botones">
+                    <button mat-flat-button color="primary" type="submit"
+                        [disabled]="actualizarForm.invalid || !actualizarForm.dirty">
+                        Guardar Cambios
+                    </button>
+                    <button mat-stroked-button color="warn" type="button" (click)="cancelar()">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

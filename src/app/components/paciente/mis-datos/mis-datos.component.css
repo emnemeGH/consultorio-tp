@@ -1,0 +1,26 @@
+.registro-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.registro-card {
+    width: 700px;
+    padding: 20px;
+}
+
+mat-card-title {
+    padding-bottom: 30px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.botones {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
