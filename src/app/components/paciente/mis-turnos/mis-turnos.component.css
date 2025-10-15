@@ -5,6 +5,16 @@
     color: #2f43b6;
 }
 
+.boton-volver-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.boton-volver-container button {
+    background-color: #5b69b831;
+}
+
 mat-accordion {
     display: flex;
     flex-direction: column;

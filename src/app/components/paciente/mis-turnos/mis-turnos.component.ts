@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TurnoPacienteCompleto } from 'src/app/models/turno/turno-paciente-completo.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { TurnoService } from 'src/app/services/turno.service';
@@ -12,6 +13,7 @@ export class MisTurnosComponent implements OnInit {
 
   turnos: TurnoPacienteCompleto[] = [];
 
+  private router = inject(Router)
   private _authService = inject(AuthService)
   private _turnoService = inject(TurnoService)
 
@@ -47,5 +49,9 @@ export class MisTurnosComponent implements OnInit {
         console.error('Error al obtener los turnos:', err);
       }
     });
+  }
+
+  volver() {
+    this.router.navigate(['/paciente']);
   }
 }
