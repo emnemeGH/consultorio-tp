@@ -9,6 +9,7 @@ import { InicioMedicoComponent } from './components/medico/inicio-medico/inicio-
 import { MisTurnosComponent } from './components/paciente/mis-turnos/mis-turnos.component';
 import { NuevoTurnoComponent } from './components/paciente/nuevo-turno/nuevo-turno.component';
 import { MisDatosComponent } from './components/paciente/mis-datos/mis-datos.component';
+import { RegistroComponent } from './components/registro/registro.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,7 +21,9 @@ const routes: Routes = [
 
   { path: 'inicio-admin', component: InicioAdminComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
   { path: 'inicio-operador', component: InicioOperadorComponent, canActivate: [rolGuard], data: { roles: ['operador'] } },
-  { path: 'inicio-medico', loadChildren: () => import('./components/medico/medico.module').then(m => m.MedicoModule)}
+  { path: 'inicio-medico', loadChildren: () => import('./components/medico/medico.module').then(m => m.MedicoModule) },
+  { path: 'registro', component: RegistroComponent },
+
 ];
 
 @NgModule({

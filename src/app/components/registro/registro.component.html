@@ -1,0 +1,62 @@
+<div class="registro-container">
+  <mat-card class="registro-card">
+    <mat-card-title>Registro de Paciente</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="registroForm" (ngSubmit)="registrarPaciente()">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="apellido" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>DNI</mat-label>
+            <input matInput formControlName="dni" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de Nacimiento</mat-label>
+            <input matInput type="date" formControlName="fecha_nacimiento" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" formControlName="password" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Obra Social</mat-label>
+            <mat-select formControlName="id_cobertura" required>
+              <mat-option *ngFor="let c of coberturas" [value]="c.id">
+                {{ c.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="botones">
+          <button mat-flat-button color="primary" type="submit" [disabled]="registroForm.invalid">
+            <mat-icon>person_add</mat-icon> Registrarse
+          </button>
+
+          <button mat-stroked-button color="accent" routerLink="/">Cancelar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
