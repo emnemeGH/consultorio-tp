@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -20,6 +20,10 @@ import { MisDatosComponent } from './components/paciente/mis-datos/mis-datos.com
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { RegistroComponent } from './components/registro/registro.component';
 import { TurnoConfirmadoDialogComponent } from './components/paciente/nuevo-turno/turno-confirmado-dialog/turno-confirmado-dialog.component';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs, 'es');
 
 @NgModule({
   declarations: [
@@ -45,7 +49,8 @@ import { TurnoConfirmadoDialogComponent } from './components/paciente/nuevo-turn
     HttpClientModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'es-ES' }
   ],
   bootstrap: [AppComponent]
 })

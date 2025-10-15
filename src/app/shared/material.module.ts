@@ -33,7 +33,7 @@ const materialModules = [
   MatExpansionModule,
   MatOptionModule,
   MatSelectModule,
-  NgxMaterialTimepickerModule
+  NgxMaterialTimepickerModule,
 ];
 
 @NgModule({
