@@ -1,13 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Agenda } from 'src/app/models/agenda/agenda.model';
 import { Especialidad } from 'src/app/models/especialidad/especialidad.model';
 import { Medico } from 'src/app/models/medico/medico.model';
+import { Turno } from 'src/app/models/turno/turno.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { EspecialidadService } from 'src/app/services/especialidad.service';
 import { MedicoService } from 'src/app/services/medico.service';
+import { TurnoService } from 'src/app/services/turno.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { TurnoConfirmadoDialogComponent } from './turno-confirmado-dialog/turno-confirmado-dialog.component';
 
 @Component({
   selector: 'app-nuevo-turno',
@@ -20,18 +25,22 @@ export class NuevoTurnoComponent implements OnInit {
 
   especialidades: Especialidad[] = [];
   profesionales: Medico[] = [];
-  id_cobertura: Number = 0
+  id_cobertura: Number = 0;
+  id_paciente: Number = 0;
 
-  agendaCompletaMedico: Agenda[] = []; 
-  agendaDiaSeleccionado: Agenda[] = [];      
-  horasDisponibles: string[] = [];
+  agendaCompletaMedico: Agenda[] = [];
+  agendaDiaSeleccionado: Agenda[] = [];
+  horasDisponibles: { hora: string, idAgenda: number }[] = [];
 
   private _authService = inject(AuthService)
   private router = inject(Router)
   private fb = inject(FormBuilder)
+  private dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
   private _usuarioService = inject(UsuarioService)
   private _especialidadService = inject(EspecialidadService);
-  private _medicoService = inject(MedicoService)
+  private _medicoService = inject(MedicoService);
+  private _turnoService = inject(TurnoService);
 
   constructor() {
 
@@ -66,6 +75,7 @@ export class NuevoTurnoComponent implements OnInit {
     this.profesional?.valueChanges.subscribe((idMedico: number) => {
       if (idMedico) {
         this._medicoService.getAgendaCompleta(idMedico).subscribe(resp => {
+          this.agendaCompletaMedico = []
           this.agendaCompletaMedico = resp.payload;
         });
       } else {
@@ -80,13 +90,7 @@ export class NuevoTurnoComponent implements OnInit {
 
   aceptar() {
     if (this.turnoForm.valid) {
-      console.log('Datos del turno:', this.turnoForm.value);
-      // Más adelante: abrir el popup de confirmación
-    }
-
-    if (!this.horasDisponibles.includes(this.turnoForm.value.hora)) {
-      alert('La hora seleccionada no está dentro de la agenda del médico.');
-      return;
+      this.guardarTurno()
     }
   }
 
@@ -124,7 +128,8 @@ export class NuevoTurnoComponent implements OnInit {
       this._usuarioService.obtenerUsuarioCompleto(usuario.id).subscribe(u => {
         if (u) {
           this.cobertura?.setValue(u.nombre_cobertura);
-          this.id_cobertura = u.id_cobertura
+          this.id_cobertura = u.id_cobertura;
+          this.id_paciente = u.id;
         }
       });
     }
@@ -153,6 +158,8 @@ export class NuevoTurnoComponent implements OnInit {
   filtrarAgendaPorFecha(fechaSeleccionada: Date) {
     if (!fechaSeleccionada) return;
 
+    this.agendaDiaSeleccionado = [];
+
     const fechaStr = fechaSeleccionada.toISOString().split('T')[0];
 
     // Guardamos los horarios que hay en la agenda completa que coiniciden con el dia selccionado
@@ -175,15 +182,71 @@ export class NuevoTurnoComponent implements OnInit {
       const [horaFin, minutoFin] = agenda.hora_salida.split(':').map(Number);
 
       while (horaInicio < horaFin || (horaInicio === horaFin && minutoInicio < minutoFin)) {
-        this.horasDisponibles.push(
-          horaInicio.toString().padStart(2, '0') + ':' + minutoInicio.toString().padStart(2, '0')
-        );
+        const horaStr = horaInicio.toString().padStart(2, '0') + ':' + minutoInicio.toString().padStart(2, '0');
+
+        this.horasDisponibles.push({ hora: horaStr, idAgenda: agenda.id });
+
         minutoInicio += 30;
         if (minutoInicio >= 60) {
           horaInicio++;
           minutoInicio = 0;
         }
       }
+    });
+  }
+
+  guardarTurno() {
+    const horaSeleccionada = this.hora?.value;
+
+    const turno: Turno = {
+      nota: this.notas?.value,
+      id_agenda: horaSeleccionada.idAgenda,
+      fecha: this.fecha?.value,
+      hora: horaSeleccionada.hora,
+      id_paciente: this.id_paciente,
+      id_cobertura: this.id_cobertura
+    };
+
+    this._turnoService.asignarTurno(turno).subscribe({
+      next: (res) => {
+        if (res.codigo === 200) {
+          this.abrirDialog(turno)
+        } else {
+          this._snackBar.open('Error al asignar turno: ' + res.message, 'Cerrar', {
+            duration: 5000
+          });
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this._snackBar.open('Error de conexión con el servidor', 'Cerrar', {
+          duration: 3000
+        });
+      }
+    });
+  }
+
+  abrirDialog(turno: Turno) {
+    const idProfesionalSeleccionado = this.profesional?.value;
+
+    const medicoSeleccionado = this.profesionales.find(
+      prof => prof.id_medico === idProfesionalSeleccionado
+    );
+
+    if (!medicoSeleccionado) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(TurnoConfirmadoDialogComponent, {
+      data: {
+        nombreEspecialista: `${medicoSeleccionado.nombre} ${medicoSeleccionado.apellido}`,
+        fecha: turno.fecha,
+        hora: turno.hora
+      }
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.turnoForm.reset();
+      this.router.navigate(['/paciente']);
     });
   }
 

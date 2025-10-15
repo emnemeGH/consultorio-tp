@@ -19,6 +19,8 @@ import { NuevoTurnoComponent } from './components/paciente/nuevo-turno/nuevo-tur
 import { MisDatosComponent } from './components/paciente/mis-datos/mis-datos.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { RegistroComponent } from './components/registro/registro.component';
+import { TurnoConfirmadoDialogComponent } from './components/paciente/nuevo-turno/turno-confirmado-dialog/turno-confirmado-dialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +32,8 @@ import { RegistroComponent } from './components/registro/registro.component';
     MisTurnosComponent,
     NuevoTurnoComponent,
     MisDatosComponent,
-    RegistroComponent
+    RegistroComponent,
+    TurnoConfirmadoDialogComponent
   ],
   imports: [
     BrowserModule,

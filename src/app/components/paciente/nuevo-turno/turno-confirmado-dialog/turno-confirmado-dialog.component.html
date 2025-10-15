@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Turno confirmado</h2>
+
+<mat-dialog-content>
+    <p>Turno confirmado con <strong>{{data.nombreEspecialista}}</strong></p>
+    <p>El día <strong>{{data.fecha | date:'dd/MM/yyyy'}}</strong> a las <strong>{{data.hora}}</strong>.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button color="primary" (click)="cerrar()">Aceptar</button>
+</mat-dialog-actions>

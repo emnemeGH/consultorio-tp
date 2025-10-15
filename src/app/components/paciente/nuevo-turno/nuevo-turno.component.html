@@ -14,7 +14,7 @@
             <mat-label>Profesional</mat-label>
             <mat-select formControlName="profesional">
                 <mat-option *ngFor="let prof of profesionales" [value]="prof.id_medico">
-                    {{ prof.nombre }} {{ prof.apellido}}
+                    {{ prof.nombre }} {{ prof.apellido}} 
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -34,11 +34,11 @@
         <mat-form-field appearance="outline">
             <mat-label>Hora</mat-label>
             <mat-select formControlName="hora">
-                <mat-option *ngFor="let hora of horasDisponibles" [value]="hora">{{hora}}</mat-option>
+                <mat-option *ngIf="horasDisponibles.length === 0" [value]="null" disabled>
+                    No hay horarios disponibles en esta fecha
+                </mat-option>
+                <mat-option *ngFor="let h of horasDisponibles" [value]="h">{{h.hora}}</mat-option>
             </mat-select>
-            <mat-error *ngIf="hora?.hasError('required')">
-                El campo hora no puede estar vacío
-            </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
