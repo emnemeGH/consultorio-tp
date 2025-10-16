@@ -14,6 +14,7 @@ import { AdminUsuariosComponent } from './components/administrador/admin-usuario
 import { AdminCoberturasComponent } from './components/administrador/admin-coberturas/admin-coberturas.component';
 import { AdminEspecialidadesComponent } from './components/administrador/admin-especialidades/admin-especialidades.component';
 import { CrearUsuarioComponent } from './components/administrador/admin-usuarios/crear-usuario/crear-usuario.component';
+import { EditarUsuarioComponent } from './components/administrador/admin-usuarios/editar-usuario/editar-usuario.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'admin', component: InicioAdminComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
   { path: 'admin/usuarios', component: AdminUsuariosComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
   { path: 'admin/usuarios/crear', component: CrearUsuarioComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
+  { path: 'admin/usuarios/editar/:id', component: EditarUsuarioComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
   { path: 'admin/coberturas', component: AdminCoberturasComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
   { path: 'admin/especialidades', component: AdminEspecialidadesComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
 

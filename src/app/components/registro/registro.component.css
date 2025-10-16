@@ -4,6 +4,10 @@
   margin-top: 40px;
 }
 
+mat-card-title {
+  padding-bottom: 30px;
+}
+
 .registro-card {
   width: 700px;
   padding: 20px;

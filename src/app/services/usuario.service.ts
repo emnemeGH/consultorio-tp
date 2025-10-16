@@ -37,17 +37,30 @@ export class UsuarioService {
     );
   }
 
+  
+  crearUsuario(usuario: CrearUsuarioRequest): Observable<ApiResponse<{ id_usuario: number }>> {
+    return this.http.post<ApiResponse<{ id_usuario: number }>>(`${this.apiUrl}/crearUsuario`, usuario);
+  }
+  
+  actualizarUsuario(id: number, usuario: Partial<UsuarioCompleto>) {
+    return this.http.put<ApiResponse<null>>(`${this.apiUrl}/actualizarUsuario/${id}`, usuario);
+  }
+
   obtenerCoberturas(): Observable<Cobertura[]> {
     return this.http.get<ApiResponse<Cobertura[]>>(`${this.apiUrl}/obtenerCoberturas`).pipe(
       map(res => res.codigo === 200 ? res.payload : [])
     );
   }
 
-  crearUsuario(usuario: CrearUsuarioRequest): Observable<ApiResponse<{ id_usuario: number }>> {
-    return this.http.post<ApiResponse<{ id_usuario: number }>>(`${this.apiUrl}/crearUsuario`, usuario);
+  crearCobertura(nombre: string): Observable<ApiResponse<[]>> {
+    return this.http.post<ApiResponse<[]>>(`${this.apiUrl}/crearCobertura`, { nombre });
   }
 
-  actualizarUsuario(id: number, usuario: Partial<UsuarioCompleto>) {
-    return this.http.put<ApiResponse<null>>(`${this.apiUrl}/actualizarUsuario/${id}`, usuario);
+  modificarCobertura(cobertura: Cobertura): Observable<ApiResponse<[]>> {
+    return this.http.put<ApiResponse<[]>>(`${this.apiUrl}/modificarCobertura`, cobertura);
+  }
+
+  eliminarCobertura(id: number): Observable<ApiResponse<[]>> {
+    return this.http.delete<ApiResponse<[]>>(`${this.apiUrl}/eliminarCobertura/${id}`);
   }
 }

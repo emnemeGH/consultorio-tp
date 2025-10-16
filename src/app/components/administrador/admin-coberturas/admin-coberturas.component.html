@@ -1,1 +1,62 @@
-<p>admin-coberturas works!</p>
+<button mat-button class="btn-volver" (click)="cancelar()">
+    <mat-icon>arrow_back</mat-icon>
+    Volver
+</button>
+
+<h2 class="titulo">Gestión de Coberturas</h2>
+
+<div class="contenedor">
+    <mat-card class="form-card">
+        <form [formGroup]="coberturaForm" (ngSubmit)="guardarCobertura()" class="formulario">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre de la cobertura</mat-label>
+                <input matInput formControlName="nombre" />
+                <mat-error *ngIf="coberturaForm.get('nombre')?.hasError('required')">
+                    Este campo es obligatorio
+                </mat-error>
+            </mat-form-field>
+
+            <div class="botones-form">
+                <button mat-flat-button color="primary" type="submit"
+                    [disabled]="coberturaForm.invalid || coberturaOriginal===coberturaForm.value.nombre">
+                    {{ editando ? 'Guardar Cambios' : 'Crear Cobertura' }}
+                </button>
+                <button mat-raised-button color="warn" type="button" (click)="reiniciarForm()">Cancelar</button>
+            </div>
+        </form>
+    </mat-card>
+
+    <mat-card class="tabla-card">
+        <table mat-table [dataSource]="coberturas" class="tabla-coberturas">
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let c">{{ c.id }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let cobertura">{{ cobertura.nombre }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acciones</th>
+                <td mat-cell *matCellDef="let cobertura">
+                    <button mat-icon-button color="primary" (click)="editarCobertura(cobertura)" matTooltip="Editar">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="eliminarCobertura(cobertura)" matTooltip="Eliminar">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['id', 'nombre', 'acciones']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['id', 'nombre', 'acciones']"></tr>
+
+            <tr class="fila-vacia" *ngIf="coberturas.length === 0">
+                <td colspan="2">No hay coberturas registradas</td>
+            </tr>
+        </table>
+    </mat-card>
+</div>

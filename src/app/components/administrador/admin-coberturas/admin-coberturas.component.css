@@ -1,0 +1,78 @@
+:host {
+    padding: 24px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.btn-volver {
+    font-weight: 500;
+    transition: 0.3s ease;
+    margin-top: 20px;
+}
+
+.btn-volver:hover {
+    transform: translateX(-3px);
+}
+
+.titulo {
+    display: flex;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.form-card,
+.tabla-card {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px #00000014;
+    padding: 24px;
+    width: 500px;
+    margin: auto;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.botones-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+button[mat-icon-button] {
+    transition: transform 0.2s ease;
+}
+
+button[mat-icon-button]:hover {
+    transform: scale(1.1);
+}
+
+.fila-vacia td {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

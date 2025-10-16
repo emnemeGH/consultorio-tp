@@ -1,3 +1,8 @@
+<button mat-button class="btn-volver" (click)="cancelar()">
+    <mat-icon>arrow_back</mat-icon>
+    Volver
+</button>
+
 <div class="nuevo-turno-container">
     <h2>Nuevo Turno</h2>
 
@@ -14,7 +19,7 @@
             <mat-label>Profesional</mat-label>
             <mat-select formControlName="profesional">
                 <mat-option *ngFor="let prof of profesionales" [value]="prof.id_medico">
-                    {{ prof.nombre }} {{ prof.apellido}} 
+                    {{ prof.nombre }} {{ prof.apellido}}
                 </mat-option>
             </mat-select>
         </mat-form-field>

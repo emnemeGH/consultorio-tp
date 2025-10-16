@@ -1,11 +1,11 @@
-<button mat-button class="btn-volver" (click)="cancelar()">
+<div class="registro-container">
+    <button mat-button class="btn-volver" (click)="cancelar()">
         <mat-icon>arrow_back</mat-icon>
         Volver
-</button>
+    </button>
 
-<div class="registro-container">
     <mat-card class="registro-card">
-        <mat-card-title>Mis Datos</mat-card-title>
+        <mat-card-title>Editar Usuario</mat-card-title>
         <mat-card-content>
             <form *ngIf="actualizarForm" [formGroup]="actualizarForm" (ngSubmit)="guardarCambios()">
                 <div class="form-grid">
@@ -26,7 +26,9 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>Fecha de Nacimiento</mat-label>
-                        <input matInput type="date" formControlName="fecha_nacimiento" />
+                        <mat-datepicker #picker></mat-datepicker>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha_nacimiento" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
@@ -42,6 +44,16 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Contraseña</mat-label>
                         <input matInput type="password" formControlName="password" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Rol</mat-label>
+                        <mat-select formControlName="rol">
+                            <mat-option value="paciente">Paciente</mat-option>
+                            <mat-option value="operador">Operador</mat-option>
+                            <mat-option value="administrador">Administrador</mat-option>
+                            <mat-option value="medico">Médico</mat-option>
+                        </mat-select>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">

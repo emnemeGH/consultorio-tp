@@ -32,7 +32,6 @@ mat-form-field {
     width: 200px;
 }
 
-/* Animación de entrada */
 @keyframes fadeIn {
     from {
         opacity: 0;

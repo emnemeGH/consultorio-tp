@@ -1,33 +1,32 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cobertura } from 'src/app/models/registro/cobertura.model';
 import { UsuarioCompleto } from 'src/app/models/usuarios/response-get-usuario.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
-  selector: 'app-mis-datos',
-  templateUrl: './mis-datos.component.html',
-  styleUrls: ['./mis-datos.component.css']
+  selector: 'app-editar-usuario',
+  templateUrl: './editar-usuario.component.html',
+  styleUrls: ['./editar-usuario.component.css']
 })
-export class MisDatosComponent implements OnInit {
+export class EditarUsuarioComponent implements OnInit {
   actualizarForm: FormGroup | null = null;
   usuario: UsuarioCompleto | null = null;
   coberturas: Cobertura[] = [];
 
   private fb = inject(FormBuilder);
-  private _authService = inject(AuthService);
   private _usuarioService = inject(UsuarioService);
   private _snackBar = inject(MatSnackBar);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    const usuarioLogueado = this._authService.obtenerUsuario();
-    if (!usuarioLogueado?.id) return;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (!id) return;
 
-    this._usuarioService.obtenerUsuarioCompleto(usuarioLogueado.id).subscribe({
+    this._usuarioService.obtenerUsuarioCompleto(id).subscribe({
       next: (usuario) => {
         if (usuario) {
           this.usuario = usuario;
@@ -44,13 +43,14 @@ export class MisDatosComponent implements OnInit {
     const fecha_formateada = usuario.fecha_nacimiento.split('T')[0];
 
     this.actualizarForm = this.fb.group({
-      nombre: [{ value: usuario.nombre, disabled: true }],
-      apellido: [{ value: usuario.apellido, disabled: true }],
-      dni: [{ value: usuario.dni, disabled: true }],
-      fecha_nacimiento: [{ value: fecha_formateada, disabled: true }],
+      nombre: [usuario.nombre, Validators.required],
+      apellido: [usuario.apellido, Validators.required],
+      dni: [usuario.dni, Validators.required],
+      fecha_nacimiento: [fecha_formateada, Validators.required],
       email: [usuario.email, [Validators.required]],
       telefono: [usuario.telefono, Validators.required],
       password: [usuario.password, Validators.required],
+      rol: [usuario.rol.toLowerCase(), Validators.required],
       id_cobertura: [usuario.id_cobertura, Validators.required]
     });
   }
@@ -61,23 +61,19 @@ export class MisDatosComponent implements OnInit {
     this._usuarioService.actualizarUsuario(this.usuario.id, this.actualizarForm.value).subscribe({
       next: (res) => {
         if (res.codigo === 200) {
-          const snack = this._snackBar.open('Cambios guardados con éxito', 'Aceptar', {
+          this._snackBar.open('Usuario actualizado con éxito', 'Aceptar', {
             duration: 0,
             horizontalPosition: 'center',
             verticalPosition: 'top'
           });
 
-          snack.onAction().subscribe(() => {
-            this._snackBar.dismiss();
-            this.router.navigate(['/paciente']);
-          });
+          this.router.navigate(['/admin/usuarios']);
+          
         } else {
           console.error('Error al actualizar usuario:', res.mensaje);
         }
       },
-      error: (err) => {
-        console.error('Error en la petición:', err);
-      }
+      error: (err) => console.error('Error en la petición:', err)
     });
   }
 
@@ -89,6 +85,6 @@ export class MisDatosComponent implements OnInit {
   }
 
   cancelar() {
-    this.router.navigate(['/paciente']);
+    this.router.navigate(['/admin/usuarios']);
   }
 }
