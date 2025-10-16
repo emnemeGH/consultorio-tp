@@ -10,6 +10,9 @@ import { MisTurnosComponent } from './components/paciente/mis-turnos/mis-turnos.
 import { NuevoTurnoComponent } from './components/paciente/nuevo-turno/nuevo-turno.component';
 import { MisDatosComponent } from './components/paciente/mis-datos/mis-datos.component';
 import { RegistroComponent } from './components/registro/registro.component';
+import { AdminUsuariosComponent } from './components/administrador/admin-usuarios/admin-usuarios.component';
+import { AdminCoberturasComponent } from './components/administrador/admin-coberturas/admin-coberturas.component';
+import { AdminEspecialidadesComponent } from './components/administrador/admin-especialidades/admin-especialidades.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,7 +22,11 @@ const routes: Routes = [
   { path: 'paciente/mis-turnos', component: MisTurnosComponent, canActivate: [rolGuard], data: { roles: ['paciente'] } },
   { path: 'paciente/mis-datos', component: MisDatosComponent, canActivate: [rolGuard], data: { roles: ['paciente'] } },
 
-  { path: 'inicio-admin', component: InicioAdminComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
+  { path: 'admin', component: InicioAdminComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
+  { path: 'admin/usuarios', component: AdminUsuariosComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
+  { path: 'admin/coberturas', component: AdminCoberturasComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
+  { path: 'admin/especialidades', component: AdminEspecialidadesComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
+
   { path: 'inicio-operador', component: InicioOperadorComponent, canActivate: [rolGuard], data: { roles: ['operador'] } },
   { path: 'inicio-medico', loadChildren: () => import('./components/medico/medico.module').then(m => m.MedicoModule) },
   { path: 'registro', component: RegistroComponent },

@@ -22,6 +22,9 @@ import { RegistroComponent } from './components/registro/registro.component';
 import { TurnoConfirmadoDialogComponent } from './components/paciente/nuevo-turno/turno-confirmado-dialog/turno-confirmado-dialog.component';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { AdminUsuariosComponent } from './components/administrador/admin-usuarios/admin-usuarios.component';
+import { AdminCoberturasComponent } from './components/administrador/admin-coberturas/admin-coberturas.component';
+import { AdminEspecialidadesComponent } from './components/administrador/admin-especialidades/admin-especialidades.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -37,7 +40,10 @@ registerLocaleData(localeEs, 'es');
     NuevoTurnoComponent,
     MisDatosComponent,
     RegistroComponent,
-    TurnoConfirmadoDialogComponent
+    TurnoConfirmadoDialogComponent,
+    AdminUsuariosComponent,
+    AdminCoberturasComponent,
+    AdminEspecialidadesComponent
   ],
   imports: [
     BrowserModule,

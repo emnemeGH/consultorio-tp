@@ -1,26 +1,28 @@
-<h2 class="titulo">Mis turnos</h2>
+<div class="container">
+    <h2 class="titulo">Mis turnos</h2>
 
-<!-- Hay que usar mat-accordion para poder usar varios expansion-panel -->
-<mat-accordion *ngIf="turnos.length > 0; else sinTurnos">
-    <mat-expansion-panel *ngFor="let turno of turnos">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                {{ turno.fecha | date:"EEEE d" | titlecase}} de
-                {{ turno.fecha | date:"MMMM":"es-ES" | titlecase}} de
-                {{ turno.fecha | date:"y":"es-ES"}}
-                a las {{turno.hora}}
-            </mat-panel-title>
-        </mat-expansion-panel-header>
+    <!-- Hay que usar mat-accordion para poder usar varios expansion-panel -->
+    <mat-accordion *ngIf="turnos.length > 0; else sinTurnos">
+        <mat-expansion-panel *ngFor="let turno of turnos">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ turno.fecha | date:"EEEE d" | titlecase}} de
+                    {{ turno.fecha | date:"MMMM":"es-ES" | titlecase}} de
+                    {{ turno.fecha | date:"y":"es-ES"}}
+                    a las {{turno.hora}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
 
-        <p><strong>Especialista:</strong> {{ turno.nombre_medico }} {{ turno.apellido_medico }}</p>
-        <p><strong>Especialidad:</strong> {{ turno.especialidad }}</p>
-    </mat-expansion-panel>
-</mat-accordion>
+            <p><strong>Especialista:</strong> {{ turno.nombre_medico }} {{ turno.apellido_medico }}</p>
+            <p><strong>Especialidad:</strong> {{ turno.especialidad }}</p>
+        </mat-expansion-panel>
+    </mat-accordion>
 
-<ng-template #sinTurnos>
-    <p class="texto-sin-turno">No tienes turnos asignados</p>
-</ng-template>
+    <ng-template #sinTurnos>
+        <p class="texto-sin-turno">No tienes turnos asignados</p>
+    </ng-template>
 
-<div class="boton-volver-container">
-    <button mat-raised-button (click)="volver()">Volver a Inicio</button>
+    <div class="boton-volver-container">
+        <button mat-raised-button (click)="volver()">Volver a Inicio</button>
+    </div>
 </div>

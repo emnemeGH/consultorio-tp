@@ -1,1 +1,21 @@
-<p>inicio-admin works!</p>
+<div class="contenedor-inicio">
+    <h2>Panel del administrador</h2>
+    <p class="subtitulo">Haz click en alguna de las funciones principales</p>
+
+    <div class="menu-opciones">
+        <button mat-raised-button class="boton-opcion" routerLink="/admin/usuarios">
+            <mat-icon>group</mat-icon>
+            <span>Gestión de Usuarios</span>
+        </button>
+
+        <button mat-raised-button class="boton-opcion" routerLink="/admin/coberturas">
+            <mat-icon>local_hospital</mat-icon>
+            <span>Gestión de Coberturas</span>
+        </button>
+
+        <button mat-raised-button class="boton-opcion" routerLink="/admin/especialidades">
+            <mat-icon>vaccines</mat-icon>
+            <span>Gestión de Especialidades</span>
+        </button>
+    </div>
+</div>

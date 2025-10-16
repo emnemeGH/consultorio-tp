@@ -64,7 +64,7 @@ export class LoginDialogComponent {
                 this._router.navigate(['/paciente']);
                 break;
               case 'administrador':
-                this._router.navigate(['/inicio-admin']);
+                this._router.navigate(['/admin']);
                 break;
               case 'operador':
                 this._router.navigate(['/inicio-operador']);
