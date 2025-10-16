@@ -1,0 +1,72 @@
+<div class="registro-container">
+    <mat-card class="registro-card">
+        <mat-card-title>Crear Usuario</mat-card-title>
+        <mat-card-content>
+            <form *ngIf="crearForm" [formGroup]="crearForm" (ngSubmit)="crearUsuario()">
+                <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Apellido</mat-label>
+                        <input matInput formControlName="apellido" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>DNI</mat-label>
+                        <input matInput formControlName="dni" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Fecha de Nacimiento</mat-label>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha_nacimiento" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" formControlName="email" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput formControlName="telefono" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput type="password" formControlName="password" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Rol</mat-label>
+                        <mat-select formControlName="rol" required>
+                            <mat-option *ngFor="let r of roles" [value]="r">{{ r }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Obra Social</mat-label>
+                        <mat-select formControlName="id_cobertura" required>
+                            <mat-option *ngFor="let c of coberturas" [value]="c.id">
+                                {{ c.nombre }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="botones">
+                    <button mat-flat-button color="primary" type="submit" [disabled]="crearForm.invalid">
+                        Crear Usuario
+                    </button>
+                    <button mat-raised-button color="warn" type="button" (click)="cancelar()">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

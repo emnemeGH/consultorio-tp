@@ -3,7 +3,7 @@ export interface CrearUsuarioRequest {
   nombre: string;
   fecha_nacimiento: string;
   password: string;
-  rol: 'paciente';
+  rol: string;
   email: string;
   telefono: string;
   dni: string;

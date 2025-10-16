@@ -1,0 +1,46 @@
+.contenedor-usuarios {
+    padding: 30px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.btn-crear {
+    height: 56px;
+    align-self: center;
+    margin-top: -22px;
+}
+
+.btn-volver {
+    margin-bottom: 15px;
+}
+
+mat-form-field {
+    width: 200px;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

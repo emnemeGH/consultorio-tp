@@ -25,6 +25,7 @@ import localeEs from '@angular/common/locales/es';
 import { AdminUsuariosComponent } from './components/administrador/admin-usuarios/admin-usuarios.component';
 import { AdminCoberturasComponent } from './components/administrador/admin-coberturas/admin-coberturas.component';
 import { AdminEspecialidadesComponent } from './components/administrador/admin-especialidades/admin-especialidades.component';
+import { CrearUsuarioComponent } from './components/administrador/admin-usuarios/crear-usuario/crear-usuario.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -43,7 +44,8 @@ registerLocaleData(localeEs, 'es');
     TurnoConfirmadoDialogComponent,
     AdminUsuariosComponent,
     AdminCoberturasComponent,
-    AdminEspecialidadesComponent
+    AdminEspecialidadesComponent,
+    CrearUsuarioComponent
   ],
   imports: [
     BrowserModule,

@@ -26,6 +26,17 @@ export class UsuarioService {
     );
   }
 
+  getAllUsuariosCompleto(): Observable<UsuarioCompleto[]> {
+    return this.http.get<ApiResponse<UsuarioCompleto[]>>(`${this.apiUrl}/obtenerUsuarios`).pipe(
+      map(res => {
+        if (res.codigo === 200) {
+          return res.payload;
+        }
+        return [];
+      })
+    );
+  }
+
   obtenerCoberturas(): Observable<Cobertura[]> {
     return this.http.get<ApiResponse<Cobertura[]>>(`${this.apiUrl}/obtenerCoberturas`).pipe(
       map(res => res.codigo === 200 ? res.payload : [])
