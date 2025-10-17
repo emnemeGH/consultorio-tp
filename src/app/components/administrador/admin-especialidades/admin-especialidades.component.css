@@ -1,0 +1,63 @@
+:host {
+    padding: 24px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.btn-volver {
+    margin-top: 20px;
+}
+
+.btn-agregar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.titulo {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 500px;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px #00000014;
+    margin: auto;
+}
+
+.mat-mdc-row:hover {
+    background-color: #f0efef;
+}
+
+button[mat-icon-button] {
+    transition: transform 0.2s ease;
+}
+
+button[mat-icon-button]:hover {
+    transform: scale(1.1);
+}
+
+.fila-vacia td {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

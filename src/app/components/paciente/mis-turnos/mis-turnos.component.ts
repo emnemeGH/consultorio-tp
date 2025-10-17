@@ -36,8 +36,11 @@ export class MisTurnosComponent implements OnInit {
         if (turnos) {
           if (turnos) {
             this.turnos = turnos.sort((a, b) => {
-              const fechaA = new Date(`${a.fecha}T${a.hora}`);
-              const fechaB = new Date(`${b.fecha}T${b.hora}`);
+              const fecha1 = a.fecha.split('T')[0]
+              const fecha2 = b.fecha.split('T')[0]
+
+              const fechaA = new Date(`${fecha1}T${a.hora}`);
+              const fechaB = new Date(`${fecha2}T${b.hora}`);
               return fechaA.getTime() - fechaB.getTime();
             });
           }

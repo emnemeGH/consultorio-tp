@@ -1,1 +1,46 @@
-<p>admin-especialidades works!</p>
+<button mat-button class="btn-volver" (click)="volver()">
+    <mat-icon>arrow_back</mat-icon>
+    Volver
+</button>
+
+<h2 class="titulo">Gestión de Especialidades</h2>
+
+<div class="contenedor">
+    <div class="btn-agregar">
+        <button mat-raised-button color="primary" (click)="abrirDialogCrear()">
+            <mat-icon>add</mat-icon>
+            Nueva Especialidad
+        </button>
+    </div>
+    <table mat-table [dataSource]="especialidades">
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let e">{{ e.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef>Descripción</th>
+            <td mat-cell *matCellDef="let e">{{ e.descripcion }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acciones</th>
+            <td mat-cell *matCellDef="let e">
+                <button mat-icon-button color="primary" (click)="abrirDialogEditar(e)" matTooltip="Editar">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="eliminarEspecialidad(e)" matTooltip="Eliminar">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['id', 'descripcion', 'acciones']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['id', 'descripcion', 'acciones']"></tr>
+
+        <tr class="fila-vacia" *ngIf="especialidades.length === 0">
+            <td colspan="3">No hay especialidades registradas</td>
+        </tr>
+    </table>
+</div>

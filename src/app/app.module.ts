@@ -27,6 +27,8 @@ import { AdminCoberturasComponent } from './components/administrador/admin-cober
 import { AdminEspecialidadesComponent } from './components/administrador/admin-especialidades/admin-especialidades.component';
 import { CrearUsuarioComponent } from './components/administrador/admin-usuarios/crear-usuario/crear-usuario.component';
 import { EditarUsuarioComponent } from './components/administrador/admin-usuarios/editar-usuario/editar-usuario.component';
+import { DialogEditarEspecialidadComponent } from './components/administrador/admin-especialidades/dialog-editar-especialidad/dialog-editar-especialidad.component';
+import { DialogCrearEspecialidadComponent } from './components/administrador/admin-especialidades/dialog-crear-especialidad/dialog-crear-especialidad.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -47,7 +49,9 @@ registerLocaleData(localeEs, 'es');
     AdminCoberturasComponent,
     AdminEspecialidadesComponent,
     CrearUsuarioComponent,
-    EditarUsuarioComponent
+    EditarUsuarioComponent,
+    DialogEditarEspecialidadComponent,
+    DialogCrearEspecialidadComponent
   ],
   imports: [
     BrowserModule,

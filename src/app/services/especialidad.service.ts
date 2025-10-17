@@ -9,12 +9,24 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EspecialidadService {
 
-  private apiUrl = "http://localhost:4000/api//obtenerEspecialidades"
+  private apiUrl = "http://localhost:4000/api"
   private http = inject(HttpClient);
 
   getEspecialidades(): Observable<Especialidad[]> {
-  return this.http.get<ApiResponse<Especialidad[]>>(this.apiUrl).pipe(
-    map(res => res.payload)
-  );
-}
+    return this.http.get<ApiResponse<Especialidad[]>>(`${this.apiUrl}/obtenerEspecialidades`).pipe(
+      map(res => res.payload)
+    );
+  }
+
+  crearEspecialidad(descripcion: string): Observable<ApiResponse<[]>> {
+    return this.http.post<ApiResponse<[]>>(`${this.apiUrl}/crearEspecialidad`, { descripcion } );
+  }
+
+  modificarEspecialidad(especialidad: Especialidad): Observable<ApiResponse<[]>> {
+    return this.http.put<ApiResponse<[]>>(`${this.apiUrl}/modificarEspecialidad`, especialidad);
+  }
+
+  eliminarEspecialidad(id: number): Observable<ApiResponse<[]>> {
+    return this.http.delete<ApiResponse<[]>>(`${this.apiUrl}/eliminarEspecialidad/${id}`);
+  }
 }

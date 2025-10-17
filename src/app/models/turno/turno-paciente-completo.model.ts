@@ -1,7 +1,7 @@
 export interface TurnoPacienteCompleto {
     id_turno:        number;
     nota:            string;
-    fecha:           Date;
+    fecha:           string;
     hora:            string;
     id_paciente:     number;
     id_cobertura:    number;

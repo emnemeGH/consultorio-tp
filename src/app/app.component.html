@@ -14,7 +14,7 @@
             {{ usuario.nombre | titlecase }}
             {{ usuario.apellido | titlecase }}
         </span>
-        <button mat-icon-button matTooltip=" {{ usuario.rol | titlecase }}">
+        <button mat-icon-button matTooltip=" {{ usuario.rol | titlecase }}" class="btn-info">
             <mat-icon>info</mat-icon>
         </button>
         <button mat-icon-button matTooltip="Cerrar sesión" (click)="logout()" color="warn" class="btn-cerrar">

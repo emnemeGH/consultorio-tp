@@ -7,7 +7,7 @@
 /* Encabezado y Selector de Fecha */
 .turnos-header-card {
     margin-bottom: 25px;
-    border-top: 6px solid var(--mat-accent-color, #ff4081); /* Barra de color de acento */
+    border-top: 6px solid var(--mat-accent-color, #5d40ff); /* Barra de color de acento */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 

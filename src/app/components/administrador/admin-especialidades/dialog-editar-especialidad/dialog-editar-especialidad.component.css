@@ -1,0 +1,23 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    color: #1f1e1e;
+    background-color: #fff;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}

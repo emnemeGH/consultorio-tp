@@ -1,0 +1,20 @@
+<div class="dialog-container">
+    <h2>Crear Especialidad</h2>
+
+    <form [formGroup]="form" (ngSubmit)="crearEspecialidad()">
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de la especialidad</mat-label>
+            <input matInput formControlName="nombre" />
+            <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+                Este campo es obligatorio
+            </mat-error>
+        </mat-form-field>
+
+        <div class="dialog-buttons">
+            <button mat-button mat-dialog-close>Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+                Crear
+            </button>
+        </div>
+    </form>
+</div>
