@@ -29,6 +29,7 @@ import { CrearUsuarioComponent } from './components/administrador/admin-usuarios
 import { EditarUsuarioComponent } from './components/administrador/admin-usuarios/editar-usuario/editar-usuario.component';
 import { DialogEditarEspecialidadComponent } from './components/administrador/admin-especialidades/dialog-editar-especialidad/dialog-editar-especialidad.component';
 import { DialogCrearEspecialidadComponent } from './components/administrador/admin-especialidades/dialog-crear-especialidad/dialog-crear-especialidad.component';
+import { VerTurnosDialogComponent } from './components/operador/ver-turnos-dialog/ver-turnos-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -51,7 +52,9 @@ registerLocaleData(localeEs, 'es');
     CrearUsuarioComponent,
     EditarUsuarioComponent,
     DialogEditarEspecialidadComponent,
-    DialogCrearEspecialidadComponent
+    DialogCrearEspecialidadComponent,
+    AdminEspecialidadesComponent,
+    VerTurnosDialogComponent
   ],
   imports: [
     BrowserModule,

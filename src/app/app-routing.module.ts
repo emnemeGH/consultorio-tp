@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'admin/coberturas', component: AdminCoberturasComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
   { path: 'admin/especialidades', component: AdminEspecialidadesComponent, canActivate: [rolGuard], data: { roles: ['administrador'] } },
 
-  { path: 'inicio-operador', component: InicioOperadorComponent, canActivate: [rolGuard], data: { roles: ['operador'] } },
+  { path: 'inicio-operador', component: InicioOperadorComponent}, //, canActivate: [rolGuard], data: { roles: ['operador'] 
   { path: 'inicio-medico', loadChildren: () => import('./components/medico/medico.module').then(m => m.MedicoModule) },
   { path: 'registro', component: RegistroComponent },
 

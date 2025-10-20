@@ -99,4 +99,11 @@ export class MedicoService {
     return this.http.get<ApiResponse<Medico[]>>(`${this.apiUrl}/obtenerMedicoPorEspecialidad/${idEspecialidad}`)
       .pipe(map(res => res.payload));
   }
+
+  getEspecialidadesMedico(idMedico: number): Observable<ApiResponse<any[]>> {
+  return this.http.get<ApiResponse<any[]>>(
+    `${this.apiUrl}/obtenerEspecialidadesMedico/${idMedico}`
+  );
+}
+
 }

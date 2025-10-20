@@ -1,0 +1,32 @@
+.operador-container {
+  margin: 30px auto;
+  max-width: 1000px;
+}
+
+.operador-header {
+  margin-bottom: 25px;
+}
+
+.tabla-card {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  font-weight: 600;
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 25px;
+  color: gray;
+}
