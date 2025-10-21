@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 const materialModules = [
@@ -33,6 +34,7 @@ const materialModules = [
   MatExpansionModule,
   MatOptionModule,
   MatSelectModule,
+  MatSidenavModule,
   NgxMaterialTimepickerModule,
 ];
 

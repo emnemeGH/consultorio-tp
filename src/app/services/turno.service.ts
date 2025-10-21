@@ -35,4 +35,9 @@ export class TurnoService {
       })
     );
   }
+
+  eliminarTurno(idTurno: number): Observable<ApiResponse<unknown>> {
+  return this.http.delete<ApiResponse<unknown>>(`${this.url}/eliminarTurnoPaciente/${idTurno}`);
+}
+
 }

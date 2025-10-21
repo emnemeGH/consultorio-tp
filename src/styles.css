@@ -8,3 +8,24 @@ body {
 body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+/* === Overlay fix para ngx-material-timepicker dentro de MatDialog === */
+ngx-material-timepicker-container,
+ngx-material-timepicker-dialog {
+  z-index: 30050 !important;
+  position: fixed !important;
+}
+
+.cdk-overlay-container {
+  z-index: 30000 !important;
+}
+
+.mat-dialog-container {
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+.editar-agenda-dialog-panel .mat-dialog-container {
+  overflow: visible !important;
+  padding: 0 !important;
+}

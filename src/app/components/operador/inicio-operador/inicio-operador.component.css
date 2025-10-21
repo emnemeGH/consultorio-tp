@@ -30,3 +30,23 @@ th {
   padding: 25px;
   color: gray;
 }
+
+.sidenav-container {
+  height: 100vh;
+}
+
+.editar-agenda-panel {
+  width: 500px;
+  background: #fff;
+  overflow-y: auto;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.contenido-principal {
+  padding: 2rem;
+}
+
+.full-width-table {
+  width: 100%;
+}

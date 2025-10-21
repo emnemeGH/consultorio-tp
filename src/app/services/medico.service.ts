@@ -1,13 +1,14 @@
 // medico.service.ts
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // Importar HttpHeaders
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
 import { RangoHorario, AgendaPayload } from '../models/medico/rango-horario.model';
 import { ApiResponse } from '../models/apiResponse.model';
 import { Turno } from '../models/medico/turno.model';
-import { AuthService } from 'src/app/services/auth.service'; // Importar AuthService
+import { AuthService } from 'src/app/services/auth.service';
 import { Medico } from '../models/medico/medico.model';
 import { Agenda } from '../models/agenda/agenda.model';
+import { Especialidad } from '../models/especialidad/especialidad.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,42 +23,30 @@ export class MedicoService {
     return this.http.get<ApiResponse<Agenda[]>>(`${this.apiUrl}/obtenerAgenda/${idMedico}`);
   }
 
-  /**
-   * 🕒 Obtiene los turnos del médico para una fecha específica
-   */
   obtenerTurnosMedico(idMedico: number, fecha: string): Observable<ApiResponse<Turno[]>> {
 
     const token = this.authService.obtenerToken();
 
-    // 1. Verificar si el token existe
     if (!token) {
-      // Si no hay token, el request fallará en el backend.
       throw new Error("Token de autenticación no encontrado.");
     }
 
-    // 2. Crear los headers con el token de autenticación
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${token}`);
 
-    // 3. Crear el cuerpo de la petición
     const body = { id_medico: idMedico, fecha };
 
-    // 4. Realizar la petición POST incluyendo los headers
     return this.http.post<ApiResponse<Turno[]>>(
       `${this.apiUrl}/obtenerTurnosMedico`,
       body,
-      { headers: headers } // CLAVE: Pasar el objeto HttpHeaders
+      { headers: headers }
     );
   }
 
-  /**
-   * 💾 Crea o modifica una agenda completa
-   */
   saveAgenda(payload: AgendaPayload): Observable<ApiResponse<unknown>[]> {
     const requests: Observable<ApiResponse<unknown>>[] = [];
 
-    // NOTA: Aquí también DEBES enviar el token en cada petición POST/PUT
     const token = this.authService.obtenerToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
 
@@ -71,27 +60,25 @@ export class MedicoService {
       };
 
       if (rango.id) {
-        // 🟢 PUT
         requests.push(
           this.http.put<ApiResponse<unknown>>(
             `${this.apiUrl}/modificarAgenda/${rango.id}`,
             registroAgenda,
-            { headers } // Incluir headers
+            { headers }
           )
         );
       } else {
-        // 🟢 POST
         requests.push(
           this.http.post<ApiResponse<unknown>>(
             `${this.apiUrl}/crearAgenda`,
             registroAgenda,
-            { headers } // Incluir headers
+            { headers }
           )
         );
       }
     });
 
-    // 🟢 forkJoin devuelve un array de las respuestas tipadas
+    // forkJoin devuelve un array de las respuestas tipadas
     return forkJoin(requests);
   }
 
@@ -100,8 +87,8 @@ export class MedicoService {
       .pipe(map(res => res.payload));
   }
 
-  getEspecialidadesMedico(idMedico: number): Observable<ApiResponse<any[]>> {
-  return this.http.get<ApiResponse<any[]>>(
+  getEspecialidadesMedico(idMedico: number): Observable<ApiResponse<Especialidad[]>> {
+  return this.http.get<ApiResponse<Especialidad[]>>(
     `${this.apiUrl}/obtenerEspecialidadesMedico/${idMedico}`
   );
 }
