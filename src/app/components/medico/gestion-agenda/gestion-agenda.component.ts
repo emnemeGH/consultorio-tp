@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms'; // Importamos AbstractControl
+import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { MedicoService } from '../../../services/medico.service';
 import { AgendaPayload, RangoHorario } from '../../../models/medico/rango-horario.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -32,16 +32,31 @@ export class GestionAgendaComponent implements OnInit {
     this.cargarDatosMedico();
   }
 
-  cargarDatosMedico(): void {
+cargarDatosMedico(): void {
     const usuarioLogueado = this.authService.obtenerUsuario();
     if (usuarioLogueado && usuarioLogueado.rol === 'medico') {
-      this.idMedico = usuarioLogueado.id;
-      this.idEspecialidad = 1; // temporal
-      this.loadHorarios(this.selectedDate);
+        this.idMedico = usuarioLogueado.id;
+        if (this.idMedico) {
+            this.medicoService.getEspecialidadesMedico(this.idMedico).subscribe({
+                next: (res) => {
+                    if (res.codigo === 200 && res.payload && res.payload.length > 0) {
+                        this.idEspecialidad = res.payload[0].id; 
+                        console.log('Especialidad ID cargada:', this.idEspecialidad);
+
+                        this.loadHorarios(this.selectedDate);
+                    } else {
+                        console.error('No se encontraron especialidades para el médico.');
+                    }
+                },
+                error: (err) => {
+                    console.error('Error al obtener la especialidad:', err);
+                }
+            });
+        }
     } else {
-      console.error("No se encontró ID de médico logueado.");
+        console.error("No se encontró ID de médico logueado.");
     }
-  }
+}
 
   get horarios(): FormArray {
     return this.agendaForm.get('horarios') as FormArray;
@@ -159,7 +174,7 @@ export class GestionAgendaComponent implements OnInit {
     }
   }
 
-  // FUNCIÓN PARA CONVERSIÓN DE 24H a 12H (AM/PM)
+  // FUNCIÓN PARA CONVERSIÓN DE FORMATO DE HORA
   public formatHora(hora: string): string {
     if (!hora) return '';
 
@@ -171,7 +186,7 @@ export class GestionAgendaComponent implements OnInit {
       return hora;
     }
 
-    // Determinar el sufijo (AM/PM)
+    // Determinar el sufijo
     const suffix = h >= 12 ? 'PM' : 'AM';
 
     let hour12 = h;

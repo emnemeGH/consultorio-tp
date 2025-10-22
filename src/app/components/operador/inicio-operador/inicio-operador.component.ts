@@ -27,13 +27,11 @@ interface AgendaMedico {
   styleUrls: ['./inicio-operador.component.css'],
 })
 export class InicioOperadorComponent implements OnInit {
-  // === Inyecciones ===
   private fb = inject(FormBuilder);
   private medicoService = inject(MedicoService);
   private dialog = inject(MatDialog);
   private usuarioService = inject(UsuarioService);
 
-  // === Propiedades ===
   filtroFechaForm!: FormGroup;
   dataSource = new MatTableDataSource<AgendaMedico>([]);
   displayedColumns = ['medico', 'especialidad', 'horario', 'acciones'];
@@ -54,7 +52,7 @@ cargarAgendasDelDia(): void {
   const fechaSeleccionada: Date = this.filtroFechaForm.value.fecha;
   const fechaFormateada = new Date(fechaSeleccionada).toISOString().split('T')[0];
 
-  // 🧹 Vaciar la tabla antes de cargar nuevos datos
+  // tabla vacia antes de cargar
   this.dataSource.data = [];
 
   this.usuarioService.getAllUsuariosCompleto().subscribe({
@@ -99,10 +97,9 @@ cargarAgendasDelDia(): void {
 
       forkJoin(requests).subscribe({
         next: (resultados) => {
-          // 🧩 Flatten de los arreglos (uno por médico)
           const agendasDelDia = resultados.flat();
 
-          // 🟢 Actualizar la tabla (vacía si no hay resultados)
+          // Actualiza la tabla
           this.dataSource.data = agendasDelDia;
         },
         error: (err) => {

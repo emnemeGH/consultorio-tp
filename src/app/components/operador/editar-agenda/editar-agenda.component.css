@@ -1,5 +1,4 @@
 .editar-agenda-container {
-  /* 🟢 MODAL MÁS GRANDE: Aumentamos de 850px a 900px */
   width: 98%;
   max-height: 90vh;
   padding: 1.5rem;
@@ -32,7 +31,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* ... (horarios-container y horario-row sin cambios) ... */
 .horarios-container {
   display: flex;
   flex-direction: column;
@@ -66,42 +64,36 @@
   overflow: hidden;
 }
 
-/* 🟢 ESTILOS PARA LA TABLA DE TURNOS (REDUCIR ESPACIO Y CENTRAR) */
+/* ESTILOS PARA LA TABLA DE TURNOS*/
 .full-width-table .mat-header-row {
-  /* Reducir la altura de la cabecera */
   height: 20px; 
 }
 
 .full-width-table .mat-row {
-  /* Reducir el espacio vertical en las filas de datos */
   height: 38px;
-  transition: background-color 0.2s; /* Añadir un efecto de hover sutil */
+  transition: background-color 0.2s;
 }
 
-/* Estilo para las celdas de título (th) */
+/* Centrar el texto en los encabezados */
 .full-width-table th.mat-header-cell {
-  /* 🟢 Centrar el texto en los encabezados */
   text-align: center;
   font-weight: 600;
-  color: #2c3e50; /* Color más oscuro para el texto de la cabecera */
+  color: #2c3e50;
 }
 
-/* Estilo para las celdas de datos (td) */
 .full-width-table td.mat-cell {
-  /* 🟢 Centrar el texto en las celdas de datos */
   text-align: center;
-  padding: 0 4px; /* Reducir el padding horizontal */
+  padding: 0 4px;
 }
 
-/* Ajustes específicos para que algunas columnas se vean mejor (Opcional, pero recomendado) */
 .full-width-table th.mat-column-hora,
 .full-width-table td.mat-column-hora {
-    /* Dar menos espacio a la columna de hora */
     flex: 0 0 80px;
 }
+
+/* Dar el espacio mínimo a la columna de acciones */
 .full-width-table th.mat-column-acciones,
 .full-width-table td.mat-column-acciones {
-    /* Dar el espacio mínimo a la columna de acciones */
     flex: 0 0 60px;
 }
 
@@ -120,7 +112,7 @@
   border-radius: 4px;
 }
 
-/* Forzar timepicker sobre el MatDialog */
+/* timepicker este por encima de otros elementos */
 ::ng-deep ngx-material-timepicker-container,
 ::ng-deep ngx-material-timepicker-dialog {
   z-index: 30050 !important;

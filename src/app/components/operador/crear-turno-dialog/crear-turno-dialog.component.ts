@@ -8,7 +8,6 @@ import { RangoHorario } from 'src/app/models/medico/rango-horario.model';
 import { MedicoService } from 'src/app/services/medico.service';
 import { CrearPacienteDialogComponent } from '../crear-paciente-dialog/crear-paciente-dialog.component';
 
-// Interfaces auxiliares
 interface Cobertura { id: number; nombre: string; }
 interface Paciente { id: number; nombre_completo: string; dni: string; }
 
@@ -61,7 +60,6 @@ export class CrearTurnoDialogComponent implements OnInit {
     this.cargarPacientes();
     this.cargarCoberturas();
 
-    // ✅ Cargamos turnos ya asignados para esa fecha y médico
     this.medicoService.obtenerTurnosMedico(this.data.id_medico, this.data.fecha)
       .subscribe({
         next: (res: any) => {
@@ -93,7 +91,6 @@ export class CrearTurnoDialogComponent implements OnInit {
     });
   }
 
-  /** ✅ Genera todas las horas disponibles combinando todos los rangos horarios del médico */
   generarHorasDisponibles(): void {
     const intervalo = 30; // minutos entre turnos
     const horas: string[] = [];
@@ -114,7 +111,6 @@ export class CrearTurnoDialogComponent implements OnInit {
       }
     }
 
-    // Ordenamos las horas resultantes (por si los rangos no están en orden)
     this.horasDisponibles = horas.sort((a, b) => {
       const [ah, am] = a.split(':').map(Number);
       const [bh, bm] = b.split(':').map(Number);
@@ -142,7 +138,6 @@ export class CrearTurnoDialogComponent implements OnInit {
     const formValue = this.turnoForm.getRawValue();
     const horaSeleccionada = formValue.hora;
 
-    // ✅ Validación 1: que la hora esté dentro de algún rango válido
     const dentroDeRango = this.data.rangos.some(r => {
       return horaSeleccionada >= r.horaEntrada && horaSeleccionada <= r.horaSalida;
     });
@@ -155,24 +150,21 @@ export class CrearTurnoDialogComponent implements OnInit {
       return;
     }
 
-    // ✅ Validación 2: no duplicar hora ocupada
     const horaOcupada = this.turnosExistentes.includes(horaSeleccionada);
     if (horaOcupada) {
       alert(`Ya existe un turno asignado a las ${horaSeleccionada}.`);
       return;
     }
 
-    // ✅ Validación 3: 1 hora de diferencia mínima
-    const hayCercano = this.turnosExistentes.some(hora => {
+    const turnoCercano = this.turnosExistentes.some(hora => {
       const diff = Math.abs(this.diferenciaMinutos(hora, horaSeleccionada));
       return diff < 30; // menos de 30 minutos de diferencia
     });
-    if (hayCercano) {
+    if (turnoCercano) {
       alert('Debe dejar al menos 30 minutos entre turnos.');
       return;
     }
 
-    // ✅ Envío final
     const dataToSend: Turno = {
       nota: formValue.nota || '',
       id_agenda: this.agendaId!,

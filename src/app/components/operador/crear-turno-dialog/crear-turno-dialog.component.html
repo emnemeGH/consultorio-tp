@@ -8,7 +8,6 @@
 
   <form [formGroup]="turnoForm" (ngSubmit)="guardarTurno()" class="turno-form">
 
-    <!-- Paciente -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Paciente</mat-label>
       <mat-select formControlName="id_paciente" required>
@@ -18,7 +17,6 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- Cobertura -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Cobertura / Obra Social</mat-label>
       <mat-select formControlName="id_cobertura" required>
@@ -28,19 +26,16 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- Fecha -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Fecha del Turno</mat-label>
       <input matInput [value]="data.fecha | date:'dd/MM/yyyy'" readonly>
     </mat-form-field>
 
-    <!-- ID de Agenda -->
     <mat-form-field appearance="outline" class="full-width" *ngIf="turnoForm.get('id_agenda')?.value">
       <mat-label>ID de Agenda</mat-label>
       <input matInput [value]="turnoForm.get('id_agenda')?.value" readonly>
     </mat-form-field>
 
-    <!-- Hora del Turno -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Hora del Turno</mat-label>
       <mat-select formControlName="hora" required>
@@ -53,13 +48,11 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Nota -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nota (opcional)</mat-label>
       <textarea matInput formControlName="nota" rows="2"></textarea>
     </mat-form-field>
 
-    <!-- 🔹 Sección inferior con el botón de agregar paciente a la izquierda -->
     <div class="footer-actions">
       <button
         mat-flat-button

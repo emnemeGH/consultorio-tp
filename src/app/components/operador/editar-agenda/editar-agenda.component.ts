@@ -167,7 +167,7 @@ export class EditarAgendaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
         // El diálogo devuelve 'true' si el turno se creó con éxito
         if (result === true) {
-            // Refrescar la lista de turnos para ver el nuevo turno
+            // Recarga la lista de turnos para ver el nuevo turno
             this.cargarTurnosDelDia(); 
         }
     });

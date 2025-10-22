@@ -1,5 +1,4 @@
 <div class="editar-agenda-container">
-  <!-- CABECERA -->
   <div class="header">
     <h2>Editar Agenda del Dr. {{ data.nombre_medico }}</h2>
     <button mat-icon-button (click)="cerrarPanel()" aria-label="Cerrar">
@@ -15,7 +14,6 @@
       <div formArrayName="horarios" class="horarios-container">
         <div *ngFor="let horario of horarios.controls; let i = index" [formGroupName]="i"
           class="horario-row mat-elevation-z2">
-          <!-- Entrada -->
           <mat-form-field appearance="outline" class="time-field">
             <mat-label>Hora de entrada</mat-label>
             <input matInput [ngxTimepicker]="entradaPicker" formControlName="horaEntrada" readonly [format]="24" />
@@ -23,7 +21,6 @@
             <ngx-material-timepicker #entradaPicker></ngx-material-timepicker>
           </mat-form-field>
 
-          <!-- Salida -->
           <mat-form-field appearance="outline" class="time-field">
             <mat-label>Hora de salida</mat-label>
             <input matInput [ngxTimepicker]="salidaPicker" formControlName="horaSalida" readonly [format]="24" />
@@ -50,12 +47,12 @@
 
   <mat-divider></mat-divider>
 
-  <!-- SECCIÓN TURNOS -->
+  <!-- TURNOS -->
   <section class="turnos-section">
        
     <div class="turnos-header">
       <h2>Turnos Confirmados</h2>
-      
+
     </div>
 
         <table mat-table [dataSource]="turnos" class="mat-elevation-z4 full-width-table">
@@ -92,10 +89,10 @@
             No hay turnos para este día.
           </p>
 
-      <div class="agenda-actions">
-        <button mat-flat-button color="primary" (click)="abrirCrearTurno()">
-          <mat-icon>add</mat-icon> Asignar Turno
-        </button>
+    <div class="agenda-actions">
+      <button mat-flat-button color="primary" (click)="abrirCrearTurno()">
+        <mat-icon>add</mat-icon> Asignar Turno
+      </button>
     </div>
      
   </section>
