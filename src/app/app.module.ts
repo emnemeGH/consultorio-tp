@@ -32,6 +32,7 @@ import { DialogCrearEspecialidadComponent } from './components/administrador/adm
 import { VerTurnosDialogComponent } from './components/operador/ver-turnos-dialog/ver-turnos-dialog.component';
 import { EditarAgendaComponent } from './components/operador/editar-agenda/editar-agenda.component';
 import { CrearTurnoDialogComponent } from './components/operador/crear-turno-dialog/crear-turno-dialog.component';
+import { CrearPacienteDialogComponent } from './components/operador/crear-paciente-dialog/crear-paciente-dialog.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -58,7 +59,8 @@ registerLocaleData(localeEs, 'es');
     AdminEspecialidadesComponent,
     VerTurnosDialogComponent,
     EditarAgendaComponent,
-    CrearTurnoDialogComponent
+    CrearTurnoDialogComponent,
+    CrearPacienteDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -10,15 +10,13 @@
 }
 
 .header {
-  /* ... (estilos de cabecera sin cambios) ... */
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(90deg, #2c3e50 0%, #4b6584 100%);
   color: white;
   padding: 1rem 1.5rem;
-  border-radius: 10px;
-  margin-bottom: 1.2rem;
+  margin: -1.5rem -1.5rem 1.5rem -1.5rem;
 }
 
 .header h2 {

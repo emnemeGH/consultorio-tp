@@ -1,0 +1,75 @@
+<div class="crear-paciente-container">
+  <div class="header">
+    <h2>Registrar nuevo paciente</h2>
+    <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="pacienteForm" (ngSubmit)="guardarPaciente()" class="paciente-form">
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>DNI</mat-label>
+        <input matInput formControlName="dni" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha_nacimiento" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="telefono">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Cobertura / Obra Social</mat-label>
+      <mat-select formControlName="id_cobertura" required>
+        <mat-option *ngFor="let c of data.coberturas" [value]="c.id">{{ c.nombre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre de Usuario</mat-label>
+        <input matInput formControlName="usuario" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" required>
+      </mat-form-field>
+    </div>
+
+    <div class="actions">
+      <button mat-flat-button color="primary" type="submit" [disabled]="pacienteForm.invalid">
+        <mat-icon>person_add</mat-icon> Crear Paciente
+      </button>
+      <button mat-flat-button type="button" (click)="cerrar()">
+        <mat-icon>cancel</mat-icon> Cancelar
+      </button>
+    </div>
+  </form>
+</div>

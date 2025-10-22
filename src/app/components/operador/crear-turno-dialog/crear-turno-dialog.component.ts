@@ -1,12 +1,14 @@
 import { Component, OnInit, inject, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TurnoService } from 'src/app/services/turno.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Turno } from 'src/app/models/turno/turno.model';
 import { RangoHorario } from 'src/app/models/medico/rango-horario.model';
+import { MedicoService } from 'src/app/services/medico.service';
+import { CrearPacienteDialogComponent } from '../crear-paciente-dialog/crear-paciente-dialog.component';
 
-// Interfaces de Soporte
+// Interfaces auxiliares
 interface Cobertura { id: number; nombre: string; }
 interface Paciente { id: number; nombre_completo: string; dni: string; }
 
@@ -19,10 +21,14 @@ export class CrearTurnoDialogComponent implements OnInit {
   private fb = inject(FormBuilder);
   private turnoService = inject(TurnoService);
   private usuarioService = inject(UsuarioService);
+  private medicoService = inject(MedicoService);
+  private dialog = inject(MatDialog);
 
   turnoForm!: FormGroup;
   pacientes: Paciente[] = [];
   coberturas: Cobertura[] = [];
+  turnosExistentes: string[] = [];
+  horasDisponibles: string[] = [];
 
   private agendaId: number | null = null;
 
@@ -54,6 +60,16 @@ export class CrearTurnoDialogComponent implements OnInit {
 
     this.cargarPacientes();
     this.cargarCoberturas();
+
+    // ✅ Cargamos turnos ya asignados para esa fecha y médico
+    this.medicoService.obtenerTurnosMedico(this.data.id_medico, this.data.fecha)
+      .subscribe({
+        next: (res: any) => {
+          this.turnosExistentes = (res.payload || []).map((t: any) => t.hora.trim());
+          this.generarHorasDisponibles();
+        },
+        error: (err) => console.error('Error cargando turnos existentes', err)
+      });
   }
 
   cargarPacientes(): void {
@@ -77,22 +93,91 @@ export class CrearTurnoDialogComponent implements OnInit {
     });
   }
 
+  /** ✅ Genera todas las horas disponibles combinando todos los rangos horarios del médico */
+  generarHorasDisponibles(): void {
+    const intervalo = 30; // minutos entre turnos
+    const horas: string[] = [];
+
+    for (const rango of this.data.rangos) {
+      const inicio = this.convertirAHoras(rango.horaEntrada);
+      const fin = this.convertirAHoras(rango.horaSalida);
+
+      for (let i = inicio; i <= fin; i += intervalo) {
+        const h = Math.floor(i / 60).toString().padStart(2, '0');
+        const m = (i % 60).toString().padStart(2, '0');
+        const hora = `${h}:${m}`;
+
+        // Excluir horas que ya estén ocupadas
+        if (!this.turnosExistentes.includes(hora)) {
+          horas.push(hora);
+        }
+      }
+    }
+
+    // Ordenamos las horas resultantes (por si los rangos no están en orden)
+    this.horasDisponibles = horas.sort((a, b) => {
+      const [ah, am] = a.split(':').map(Number);
+      const [bh, bm] = b.split(':').map(Number);
+      return ah * 60 + am - (bh * 60 + bm);
+    });
+  }
+
+  private convertirAHoras(hora: string): number {
+    const [h, m] = hora.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  private diferenciaMinutos(h1: string, h2: string): number {
+    const [h1h, h1m] = h1.split(':').map(Number);
+    const [h2h, h2m] = h2.split(':').map(Number);
+    return (h2h * 60 + h2m) - (h1h * 60 + h1m);
+  }
+
   guardarTurno(): void {
     if (this.turnoForm.invalid || !this.agendaId) {
       alert('Por favor, completa todos los campos requeridos.');
       return;
     }
 
-    // getRawValue() para incluir campos deshabilitados (como id_agenda)
     const formValue = this.turnoForm.getRawValue();
+    const horaSeleccionada = formValue.hora;
 
-    const fechaDate: Date = new Date(this.data.fecha);
+    // ✅ Validación 1: que la hora esté dentro de algún rango válido
+    const dentroDeRango = this.data.rangos.some(r => {
+      return horaSeleccionada >= r.horaEntrada && horaSeleccionada <= r.horaSalida;
+    });
 
+    if (!dentroDeRango) {
+      const rangosTexto = this.data.rangos
+        .map(r => `${r.horaEntrada}-${r.horaSalida}`)
+        .join(' / ');
+      alert(`La hora seleccionada no pertenece a los rangos válidos (${rangosTexto}).`);
+      return;
+    }
+
+    // ✅ Validación 2: no duplicar hora ocupada
+    const horaOcupada = this.turnosExistentes.includes(horaSeleccionada);
+    if (horaOcupada) {
+      alert(`Ya existe un turno asignado a las ${horaSeleccionada}.`);
+      return;
+    }
+
+    // ✅ Validación 3: 1 hora de diferencia mínima
+    const hayCercano = this.turnosExistentes.some(hora => {
+      const diff = Math.abs(this.diferenciaMinutos(hora, horaSeleccionada));
+      return diff < 30; // menos de 30 minutos de diferencia
+    });
+    if (hayCercano) {
+      alert('Debe dejar al menos 30 minutos entre turnos.');
+      return;
+    }
+
+    // ✅ Envío final
     const dataToSend: Turno = {
       nota: formValue.nota || '',
       id_agenda: this.agendaId!,
-      fecha: fechaDate, // Tipo Date
-      hora: formValue.hora,
+      fecha: new Date(this.data.fecha),
+      hora: horaSeleccionada,
       id_paciente: formValue.id_paciente,
       id_cobertura: formValue.id_cobertura
     };
@@ -115,5 +200,20 @@ export class CrearTurnoDialogComponent implements OnInit {
 
   cerrar(): void {
     this.dialogRef.close();
+  }
+
+  abrirCrearPaciente(): void {
+    const dialogRef = this.dialog.open(CrearPacienteDialogComponent, {
+      width: '750px',
+      data: { coberturas: this.coberturas }
+    });
+
+    dialogRef.afterClosed().subscribe((nuevoPaciente) => {
+      if (nuevoPaciente) {
+        // recargar pacientes
+        this.cargarPacientes();
+        alert(`Paciente ${nuevoPaciente.apellido}, ${nuevoPaciente.nombre} creado con éxito`);
+      }
+    });
   }
 }

@@ -1,75 +1,85 @@
 <div class="crear-turno-container">
-    <div class="header">
-        <h2>Asignar Turno al Dr. {{ data.nombre_medico }}</h2>
-        <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
-          <mat-icon>close</mat-icon>
+  <div class="header">
+    <h2>Asignar Turno al Dr. {{ data.nombre_medico }}</h2>
+    <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="turnoForm" (ngSubmit)="guardarTurno()" class="turno-form">
+
+    <!-- Paciente -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Paciente</mat-label>
+      <mat-select formControlName="id_paciente" required>
+        <mat-option *ngFor="let p of pacientes" [value]="p.id">
+          {{ p.nombre_completo }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Cobertura -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Cobertura / Obra Social</mat-label>
+      <mat-select formControlName="id_cobertura" required>
+        <mat-option *ngFor="let c of coberturas" [value]="c.id">
+          {{ c.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Fecha -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha del Turno</mat-label>
+      <input matInput [value]="data.fecha | date:'dd/MM/yyyy'" readonly>
+    </mat-form-field>
+
+    <!-- ID de Agenda -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="turnoForm.get('id_agenda')?.value">
+      <mat-label>ID de Agenda</mat-label>
+      <input matInput [value]="turnoForm.get('id_agenda')?.value" readonly>
+    </mat-form-field>
+
+    <!-- Hora del Turno -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Hora del Turno</mat-label>
+      <mat-select formControlName="hora" required>
+        <mat-option *ngFor="let h of horasDisponibles" [value]="h">
+          {{ h }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="turnoForm.get('hora')?.hasError('required')">
+        La hora es obligatoria.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Nota -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nota (opcional)</mat-label>
+      <textarea matInput formControlName="nota" rows="2"></textarea>
+    </mat-form-field>
+
+    <!-- 🔹 Sección inferior con el botón de agregar paciente a la izquierda -->
+    <div class="footer-actions">
+      <button
+        mat-flat-button
+        color="primary"
+        class="btn-agregar-paciente"
+        type="button"
+        (click)="abrirCrearPaciente()"
+      >
+        <mat-icon>person_add</mat-icon>
+        Agregar paciente
+      </button>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="turnoForm.invalid">
+          <mat-icon>check_circle</mat-icon> Confirmar Turno
         </button>
+        <button mat-flat-button type="button" (click)="cerrar()">
+          <mat-icon>cancel</mat-icon> Cancelar
+        </button>
+      </div>
     </div>
-
-    <form [formGroup]="turnoForm" (ngSubmit)="guardarTurno()" class="turno-form">
-        
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Paciente</mat-label>
-            <mat-select formControlName="id_paciente" required>
-                <mat-option *ngFor="let p of pacientes" [value]="p.id">
-                    {{ p.nombre_completo }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Cobertura/Obra Social</mat-label>
-            <mat-select formControlName="id_cobertura" required>
-                <mat-option *ngFor="let c of coberturas" [value]="c.id">
-                    {{ c.nombre }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Fecha del Turno</mat-label>
-            <input matInput [value]="data.fecha | date:'dd/MM/yyyy'" readonly>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width" *ngIf="turnoForm.get('id_agenda')?.value">
-            <mat-label>ID de Agenda</mat-label>
-            <input matInput [value]="turnoForm.get('id_agenda')?.value" readonly>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Hora del Turno</mat-label>
-            <input 
-                matInput 
-                [ngxTimepicker]="horaPicker" 
-                formControlName="hora" 
-                readonly 
-                required
-                [format]="24" 
-            />
-            <ngx-material-timepicker-toggle matSuffix [for]="horaPicker"></ngx-material-timepicker-toggle>
-            <ngx-material-timepicker #horaPicker></ngx-material-timepicker>
-            <mat-error *ngIf="turnoForm.get('hora')?.hasError('required')">
-                La hora es obligatoria.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nota (opcional)</mat-label>
-            <textarea matInput formControlName="nota" rows="2"></textarea>
-        </mat-form-field>
-
-        <div class="actions">
-            <button 
-                mat-flat-button 
-                color="primary" 
-                type="submit" 
-                [disabled]="turnoForm.invalid"
-            >
-                <mat-icon>check_circle</mat-icon> Confirmar Turno
-            </button>
-            <button mat-flat-button type="button" (click)="cerrar()">
-                <mat-icon>cancel</mat-icon> Cancelar
-            </button>
-        </div>
-    </form>
+  </form>
 </div>

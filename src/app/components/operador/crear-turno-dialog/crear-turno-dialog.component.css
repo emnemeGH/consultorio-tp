@@ -1,5 +1,5 @@
 .crear-turno-container {
-  max-width: 755px; /* Ancho máximo del diálogo */
+  max-width: 755px;
   padding: 1.5rem;
   background: #ffffff;
   display: flex;
@@ -8,7 +8,6 @@
 }
 
 .header {
-  /* Estilo de cabecera consistente con editar-agenda */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,29 +25,42 @@
 .turno-form {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espacio entre campos de formulario */
+  gap: 15px;
 }
 
 .full-width {
   width: 100%;
 }
 
-/* Sobreescribir el estilo de Material para que los campos ocupen el 100% de width */
 .turno-form .mat-form-field {
   width: 100%;
 }
 
-/* Estilos para la sección de botones */
-.actions {
+/* 🔹 Contenedor de botones inferior */
+.footer-actions {
   display: flex;
-  justify-content: flex-end; /* Alinear los botones a la derecha */
-  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #eee; /* Separador sutil */
+  border-top: 1px solid #eee;
+}
+
+/* 🔹 Estilo del botón "Agregar paciente" */
+.btn-agregar-paciente {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 40px;
+}
+
+/* 🔹 Acciones de Confirmar / Cancelar a la derecha */
+.actions {
+  display: flex;
+  gap: 1rem;
 }
 
 .actions button {
-  padding: 0 16px; 
+  padding: 0 16px;
   height: 40px;
 }
