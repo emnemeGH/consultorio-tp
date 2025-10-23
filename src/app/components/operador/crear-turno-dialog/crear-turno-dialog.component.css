@@ -1,10 +1,11 @@
 .crear-turno-container {
   max-width: 755px;
+  max-height: 700px;
   padding: 1.5rem;
+  padding-bottom: 60px;
   background: #ffffff;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 }
 
 .header {

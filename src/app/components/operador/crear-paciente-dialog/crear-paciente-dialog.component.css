@@ -1,6 +1,8 @@
 .crear-paciente-container {
   max-width: 720px;
+  max-height: 90vh;
   padding: 1.5rem;
+  padding-bottom: 60px;
   background: #fff;
 }
 

@@ -44,8 +44,7 @@ export class TurnosProgramadosComponent implements OnInit {
     const fechaFormateada = fecha.toISOString().split('T')[0];
     const body = { id_medico: this.idMedico, fecha: fechaFormateada };
 
-    this.http
-      .post<ApiResponse<Turno[]>>('http://localhost:4000/api/obtenerTurnosMedico', body, { headers })
+    this.http.post<ApiResponse<Turno[]>>('http://localhost:4000/api/obtenerTurnosMedico', body, { headers })
       .subscribe({
         next: (res) => {
           if (res.codigo === 200 && res.payload.length > 0) {

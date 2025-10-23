@@ -23,7 +23,7 @@ export class EditarAgendaComponent implements OnInit {
   private medicoService = inject(MedicoService);
   private turnoService = inject(TurnoService);
   private authService = inject(AuthService);
-  private dialog = inject(MatDialog);
+  private dialog = inject(MatDialog);
 
   agendaForm: FormGroup;
   rangosGuardados: RangoHorario[] = [];
@@ -153,24 +153,25 @@ export class EditarAgendaComponent implements OnInit {
   }
 
   abrirCrearTurno(): void {
-        const dialogRef = this.dialog.open(CrearTurnoDialogComponent, {
-            width: '800px',
-        data: {
-            id_medico: this.data.id_medico,
-            nombre_medico: this.data.nombre_medico,
-            fecha: this.data.fecha,
-            rangos: this.rangosGuardados
-        }
+    const dialogRef = this.dialog.open(CrearTurnoDialogComponent, {
+      width: '800px',
+      height: '600px',
+      data: {
+        id_medico: this.data.id_medico,
+        nombre_medico: this.data.nombre_medico,
+        fecha: this.data.fecha,
+        rangos: this.rangosGuardados
+      }
     });
 
     // Manejar el resultado del diálogo
     dialogRef.afterClosed().subscribe(result => {
-        // El diálogo devuelve 'true' si el turno se creó con éxito
-        if (result === true) {
-            // Recarga la lista de turnos para ver el nuevo turno
-            this.cargarTurnosDelDia(); 
-        }
+      // El diálogo devuelve 'true' si el turno se creó con éxito
+      if (result === true) {
+        // Recarga la lista de turnos para ver el nuevo turno
+        this.cargarTurnosDelDia();
+      }
     });
-}
+  }
 
 }

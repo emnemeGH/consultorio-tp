@@ -39,8 +39,8 @@ cargarDatosMedico(): void {
         if (this.idMedico) {
             this.medicoService.getEspecialidadesMedico(this.idMedico).subscribe({
                 next: (res) => {
-                    if (res.codigo === 200 && res.payload && res.payload.length > 0) {
-                        this.idEspecialidad = res.payload[0].id; 
+                    if (res.codigo === 200 && res.payload && res.payload.length > 0 && res.payload[0].id_especialidad) {
+                        this.idEspecialidad = res.payload[0].id_especialidad; 
                         console.log('Especialidad ID cargada:', this.idEspecialidad);
 
                         this.loadHorarios(this.selectedDate);
@@ -103,9 +103,6 @@ cargarDatosMedico(): void {
           // Filtrar los eliminados
           .filter((r) => !eliminados.includes(r.id));
 
-        console.log("📅 Fecha seleccionada:", formattedDate);
-        console.log("🕒 Rangos filtrados:", rangosFiltrados);
-
         this.rangosGuardados = rangosFiltrados;
       }
     });
@@ -118,7 +115,7 @@ cargarDatosMedico(): void {
       eliminados.push(id);
       localStorage.setItem('rangosEliminados', JSON.stringify(eliminados));
 
-      console.log(`🗑️ Horario ID ${id} eliminado permanentemente`);
+      console.log(`Horario ID ${id} eliminado permanentemente`);
     }
   }
 

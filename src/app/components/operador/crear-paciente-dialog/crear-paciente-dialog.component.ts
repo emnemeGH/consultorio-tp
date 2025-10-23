@@ -27,7 +27,6 @@ export class CrearPacienteDialogComponent {
       telefono: [''],
       fecha_nacimiento: ['', Validators.required],
       id_cobertura: [null, Validators.required],
-      usuario: ['', Validators.required],
       password: ['', Validators.required]
     });
   }

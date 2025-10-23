@@ -7,6 +7,7 @@ import { Turno } from 'src/app/models/turno/turno.model';
 import { RangoHorario } from 'src/app/models/medico/rango-horario.model';
 import { MedicoService } from 'src/app/services/medico.service';
 import { CrearPacienteDialogComponent } from '../crear-paciente-dialog/crear-paciente-dialog.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface Cobertura { id: number; nombre: string; }
 interface Paciente { id: number; nombre_completo: string; dni: string; }
@@ -21,6 +22,7 @@ export class CrearTurnoDialogComponent implements OnInit {
   private turnoService = inject(TurnoService);
   private usuarioService = inject(UsuarioService);
   private medicoService = inject(MedicoService);
+  private _authService = inject(AuthService)
   private dialog = inject(MatDialog);
 
   turnoForm!: FormGroup;
@@ -60,6 +62,16 @@ export class CrearTurnoDialogComponent implements OnInit {
     this.cargarPacientes();
     this.cargarCoberturas();
 
+    this.turnoForm.get('id_paciente')?.valueChanges.subscribe(idPaciente => {
+      if (idPaciente) {
+        this.actualizarCoberturaPaciente(idPaciente);
+        this.turnoForm.get('id_cobertura')?.disable();
+      } else {
+        this.turnoForm.get('id_cobertura')?.setValue(null);
+      }
+    });
+
+
     this.medicoService.obtenerTurnosMedico(this.data.id_medico, this.data.fecha)
       .subscribe({
         next: (res: any) => {
@@ -68,6 +80,19 @@ export class CrearTurnoDialogComponent implements OnInit {
         },
         error: (err) => console.error('Error cargando turnos existentes', err)
       });
+  }
+
+  actualizarCoberturaPaciente(idPaciente: number) {
+    this.usuarioService.obtenerUsuarioCompleto(idPaciente).subscribe({
+      next: (usuario) => {
+        if (usuario && usuario.id_cobertura) {
+          this.turnoForm.get('id_cobertura')?.setValue(usuario.id_cobertura);
+        } else {
+          this.turnoForm.get('id_cobertura')?.setValue(null);
+        }
+      },
+      error: err => console.error('Error obteniendo cobertura del paciente', err)
+    });
   }
 
   cargarPacientes(): void {
@@ -197,6 +222,7 @@ export class CrearTurnoDialogComponent implements OnInit {
   abrirCrearPaciente(): void {
     const dialogRef = this.dialog.open(CrearPacienteDialogComponent, {
       width: '750px',
+      height: '600px',
       data: { coberturas: this.coberturas }
     });
 
