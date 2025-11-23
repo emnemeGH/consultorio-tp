@@ -33,6 +33,8 @@ import { VerTurnosDialogComponent } from './components/operador/ver-turnos-dialo
 import { EditarAgendaComponent } from './components/operador/editar-agenda/editar-agenda.component';
 import { CrearTurnoDialogComponent } from './components/operador/crear-turno-dialog/crear-turno-dialog.component';
 import { CrearPacienteDialogComponent } from './components/operador/crear-paciente-dialog/crear-paciente-dialog.component';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './mocks/in-memory-data.service';
 
 registerLocaleData(localeEs, 'es');
 
@@ -69,10 +71,14 @@ registerLocaleData(localeEs, 'es');
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      delay: 100,
+      passThruUnknownUrl: true
+    })
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'es-ES' }
   ],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 // medico.service.ts
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
 import { RangoHorario, AgendaPayload } from '../models/medico/rango-horario.model';
 import { ApiResponse } from '../models/apiResponse.model';
@@ -25,30 +25,16 @@ export class MedicoService {
 
   obtenerTurnosMedico(idMedico: number, fecha: string): Observable<ApiResponse<Turno[]>> {
 
-    const token = this.authService.obtenerToken();
-
-    if (!token) {
-      throw new Error("Token de autenticación no encontrado.");
-    }
-
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${token}`);
-
     const body = { id_medico: idMedico, fecha };
 
     return this.http.post<ApiResponse<Turno[]>>(
       `${this.apiUrl}/obtenerTurnosMedico`,
-      body,
-      { headers: headers }
+      body
     );
   }
 
   saveAgenda(payload: AgendaPayload): Observable<ApiResponse<unknown>[]> {
     const requests: Observable<ApiResponse<unknown>>[] = [];
-
-    const token = this.authService.obtenerToken();
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
 
     payload.rangos.forEach((rango: RangoHorario) => {
       const registroAgenda = {
@@ -63,16 +49,14 @@ export class MedicoService {
         requests.push(
           this.http.put<ApiResponse<unknown>>(
             `${this.apiUrl}/modificarAgenda/${rango.id}`,
-            registroAgenda,
-            { headers }
+            registroAgenda
           )
         );
       } else {
         requests.push(
           this.http.post<ApiResponse<unknown>>(
             `${this.apiUrl}/crearAgenda`,
-            registroAgenda,
-            { headers }
+            registroAgenda
           )
         );
       }
